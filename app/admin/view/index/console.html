@@ -1,0 +1,219 @@
+{extend name="base" /}
+
+{block name="body"}
+<script type="text/javascript" src="/admin/lib/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="/admin/lib/echarts/echarts.theme.js"></script>
+<script type="text/javascript" src="/admin/lib/echarts/world/js/china.js"></script>
+<body class="ok-body-scroll console">
+<div class="ok-body home">
+	<div class="layui-row layui-col-space15 total">
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text recharge">0</div>
+						<div class="stat-heading">充值总额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card ">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text cash">0</div>
+						<div class="stat-heading">提现总额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card ">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text rechargeTotal">0</div>
+						<div class="stat-heading">充值单量</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text regist">0</div>
+						<div class="stat-heading">注册人数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+	</div>
+	
+	<div class="layui-row layui-col-space15 total">
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayRegist">0</div>
+						<div class="stat-heading">今日注册</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayRecharge">0</div>
+						<div class="stat-heading">今日充值</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card ">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayCash">0</div>
+						<div class="stat-heading">今日提现</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayTaskUser">0</div>
+						<div class="stat-heading">今日完成任务人数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3" style="display:none;">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayTask">0</div>
+						<div class="stat-heading">今日完成任务数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayTaskIncome">0</div>
+						<div class="stat-heading">今日任务收益</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text todayTeamIncome">0</div>
+						<div class="stat-heading">今日团队佣金</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text balance">0</div>
+						<div class="stat-heading">会员总余额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-row layui-col-space15">
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					<div class="ok-card-title">注册统计</div>
+				</div>
+				<div class="ok-card-body map-body">
+					<div style="height: 100%;" id="registMap"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					<div class="ok-card-title">登入统计</div>
+				</div>
+				<div class="ok-card-body map-body">
+					<div style="height: 100%;" id="loginMap"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="layui-row layui-col-space15">
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					<div class="ok-card-title">充值金额</div>
+				</div>
+				<div class="ok-card-body map-body">
+					<div style="height: 100%;" id="rechargeMoneyMap"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-md6">
+			<div class="layui-card">
+				<div class="layui-card-header">
+					<div class="ok-card-title">充值人数</div>
+				</div>
+				<div class="ok-card-body map-body">
+					<div style="height: 100%;" id="rechargeCountMap"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+</body>
+<script type="text/javascript" src="/admin/js/console.js?v=1.0"></script>
+{/block}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

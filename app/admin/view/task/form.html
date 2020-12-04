@@ -1,0 +1,107 @@
+{extend name="base" /}{block name="body"}
+<script type="text/javascript" charset="utf-8" src="/admin/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/admin/js/ueditor/ueditor.all.js"></script>
+<body>
+<div class="ok-body">
+	<form class="layui-form ok-form" lay-filter="formFilter">
+		<input type="hidden" name="id" />
+		<div class="layui-form-item">
+			<label class="layui-form-label">标题</label>
+			<div class="layui-input-block">
+				<input type="text" name="title" placeholder="请输入标题" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		
+		<div class="layui-form-item" style="display:none;">
+			<label class="layui-form-label">悬赏金额</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+				<input type="text" name="money" placeholder="请选择悬赏金额" autocomplete="off" class="layui-input" />
+				</div>
+				<div class="layui-inline">元</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">任务类型</label>
+			<div class="layui-input-block">
+				{foreach $Think.config.sys.task_type as $key=>$val }
+				<input type="radio" name="type" value="{$key}" title="{$val}" {$key==1?'checked':''}>
+				{/foreach}
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">会员等级</label>
+			<div class="layui-input-block">
+				<input type="radio" name="vipcard_id" value="0" title="不限" checked>
+				{foreach :get_vipcards() as $key=>$val }
+					<input type="radio" name="vipcard_id" value="{$key}" title="{$val}">
+				{/foreach}
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">要求</label>
+			<div class="layui-input-block">
+				{foreach $Think.config.sys.task_ask as $key=>$val }
+				<input type="radio" name="ask" value="{$key}" title="{$val}" {$key==1?'checked':''}>
+				{/foreach}
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">链接</label>
+			<div class="layui-input-block">
+				<input type="text" name="link" placeholder="请输入链接" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">领取数量</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+				<input type="text" name="num" placeholder="请输入领取数量" autocomplete="off" class="layui-input" lay-verify="required|number">
+				</div>
+				<div class="layui-inline"></div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">结束时间</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+				<input type="text" name="dt_end" placeholder="请选择结束时间" readonly="readonly" autocomplete="off" class="layui-input date" lay-verify="required">
+				</div>
+				<div class="layui-inline"></div>
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item" style="display:none;">
+			<label class="layui-form-label">排序</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+				<input type="text" name="sort" placeholder="请输入排序" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline"></div>
+			</div>
+		</div>
+		
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+
+
+
+
+	</form>
+</div>
+<script>formPageInit()</script>
+</body>
+{/block}

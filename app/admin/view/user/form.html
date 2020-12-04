@@ -1,0 +1,211 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<form class="layui-form ok-form layui-form-pane" lay-filter="formFilter">
+		<input type="hidden" name="id" />
+		<div class="layui-form-item">
+			<label class="layui-form-label">账号</label>
+			<div class="layui-input-block">
+				<input type="text" name="username" readonly="readonly" placeholder="请输入账号" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名</label>
+			<div class="layui-input-block">
+				<input type="text" name="name" placeholder="请输入姓名" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		
+		<div class="layui-form-item" style="display:none;">
+			<label class="layui-form-label">手机号</label>
+			<div class="layui-input-block">
+				<input type="text" name="tel" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">性别</label>
+			<div class="layui-input-block">
+			<div class="layui-inline">
+				<select name="sex">
+					<option value="0">请选择</option>
+					<option value="1">男</option>
+					<option value="2">女</option>
+				</select>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">地址</label>
+			<div class="layui-input-block">
+				<input type="text" name="address" placeholder="请输入地址" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">密码</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+					<input type="text" name="password" placeholder="" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline">
+					不修改密码请留空
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">提现密码</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+					<input type="text" name="password2" placeholder="" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline">
+					不修改密码请留空
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">密保问题</label>
+			<div class="layui-input-block">
+				<select name="question">
+					{foreach $Think.config.sys.questions as $val }
+					<option value="{$val}">{$val}</option>
+					{/foreach}
+				</select>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">密保答案</label>
+			<div class="layui-input-block">
+				<input type="text" name="answer" placeholder="请输入密保答案" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">注册时间</label>
+			<div class="layui-input-block">
+				<input type="text" name="create_time" readonly="readonly" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">最后登入时间</label>
+			<div class="layui-input-block">
+				<input type="text" name="login_time" readonly="readonly" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">银行名称</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">				
+					<input type="text" name="bank_name" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline"></div>			
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">分行</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">				
+					<input type="text" name="branch" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline"></div>			
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">持卡人</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">				
+					<input type="text" name="user_name" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline"></div>			
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">银行账户</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">				
+					<input type="text" name="account" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-inline"></div>			
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">USDT钱包</label>
+			<div class="layui-input-block">
+				<input type="text" name="usdt" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">VIP等级</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">				
+					<select name="vipcard_id" lay-verify="required">
+						<option value="">请选择</option>
+					</select>
+				</div>
+				<div class="layui-inline"></div>			
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item layui-form-text">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<textarea id="memo" class="layui-textarea" name="memo"></textarea>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+
+
+
+
+	</form>
+</div>
+<script>
+formPageInit({
+	afterPageInit:function(){
+		var $ = layui.jquery;
+		var form = layui.form;
+		var okUtils = layui.okUtils;
+		
+		if(!_formData.id){
+			$("input[name=username]").removeAttr("readonly");
+		}
+		
+		//获取会员等级选项
+		okUtils.ajax("/index/vipcards", "get", null, true).done(function (res) {
+		    res.data.forEach(function(row){
+		    	if(row.id==_formData.vipcard_id){
+		    		$("select[name=vipcard_id]").append('<option value="'+row.id+'" selected="selected">'+row.name+'</option>');
+		    	}else{
+		    		$("select[name=vipcard_id]").append('<option value="'+row.id+'">'+row.name+'</option>');
+		    	}
+		    });
+		    form.render('select');
+		}).fail(function (error) {
+		    console.log(error);
+		});
+		
+		
+	}
+})
+</script>
+</body>
+{/block}

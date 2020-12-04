@@ -1,0 +1,33 @@
+{extend name="base" /}
+{block name="body"}
+
+<body>
+<div class="ok-body">
+	<!--模糊搜索区域-->
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<input class="layui-input" placeholder="请输入角色名" autocomplete="off" name="name">
+			<button class="layui-btn" lay-submit="" lay-filter="search">
+				<i class="layui-icon layui-icon-search"></i>
+			</button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<!--js逻辑-->
+<script>
+listPageInit({
+	cols: [[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 100, sort: true},
+		{field: "name", title: "角色名称", width: 200},
+		{field: "memo", title: "备注", width: 300},
+		{title: "操作", width: 80, align: "center", templet: "#operationTpl", fixed: "right"}
+	]]
+})
+</script>
+
+</body>
+
+{/block}

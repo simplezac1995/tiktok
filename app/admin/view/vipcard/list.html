@@ -1,0 +1,35 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline"><input class="layui-input" placeholder="关键词" autocomplete="off" name="name"></div>
+			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"会员等级",
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 80, sort: true},
+		{field: "name", title: "等级名称", width: 150},
+		{field: "price", title: "价格", width: 150},
+		{field: "usdt", title: "USDT个数", width: 150},
+		{field: "vip_brokerage1", title: "一级推荐奖励", width: 150},
+		{field: "vip_brokerage2", title: "二级推荐奖励", width: 150},
+		{field: "vip_brokerage3", title: "三级推荐奖励", width: 150},
+		{field: "task_brokerage1", title: "一级任务返佣 %", width: 150},
+		{field: "task_brokerage2", title: "二级任务返佣 %", width: 150},
+		{field: "task_brokerage3", title: "三级任务返佣 %", width: 150},
+		{field: "task_money", title: "单个任务收益", width: 150},
+		{field: "task_max", title: "每日任务数限制", width: 150},
+		{title: "操作", width: 80, align: "center", templet: "#operationTpl", fixed: "right"}
+	]]
+})
+</script>
+</body>
+{/block}

@@ -1,0 +1,39 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline"><input class="layui-input" placeholder="关键词" autocomplete="off" name="name"></div>
+			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"视频教程",
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 80, sort: true},
+		{field: "title", title: "标题",width: 300},
+		{field: "link", title: "视频地址",templet:"#linkTpl", width: 300},
+		{field: "create_time", title: "添加时间", width: 150},
+		{field: "sort", title: "排序", width: 150,sort:true},
+		{title: "操作", width: 80, align: "center", templet: "#operationTpl", fixed: "right"}
+	]],
+	afterPageInit:function(toolFunction){
+		toolFunction.showVideo=function(data){
+			console.log(data);
+			layui.okLayer.open("视频", data.link, "60%", "60%", null, function () {
+			})
+		}
+	}
+})
+</script>
+
+<script id="linkTpl" type="text/html">
+	<a href="javascript:" title="视频" lay-event="showVideo">{{d.link}}</a>
+</script>
+</body>
+{/block}

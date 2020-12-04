@@ -1,0 +1,67 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline">
+				<select name="type">
+					<option value="">业务类型</option>
+					{foreach $Think.config.sys.task_type as $key=>$val }
+					<option value="{$key}">{$val}</option>
+					{/foreach}
+				</select>
+			</div>
+			
+			<div class="layui-inline">
+				<select name="vipcard_id">
+					<option value="">所有等级</option>
+					{foreach :get_vipcards() as $key=>$val }
+					<option value="{$key}">{$val}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div class="layui-inline"><input class="layui-input date-range" placeholder="截止时间" autocomplete="off" name="date_range"></div>
+			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"任务",
+	toolbar:'#toolbarTpl2',
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 80, sort: true},
+		{field: "sn", title: "编号", width: 150},
+		{field: "title", title: "标题", width: 150},
+		{field: "type", title: "任务类型", width: 150},
+		{field: "ask", title: "要求", width: 150},
+		{field: "vipcard", title: "会员等级", width: 150},
+		{field: "dt_end", title: "截止时间", width: 150},
+		{field: "money", title: "悬赏金额", width: 150},
+		{field: "num", title: "名额", width: 150},
+		{field: "last", title: "剩余数量", width: 150},
+		{field: "create_time", title: "添加时间", width: 150},
+		{title: "操作", width: 120, align: "center", templet: "#myoperationTpl", fixed: "right"}
+	]]
+})
+</script>
+
+<script type="text/html" id="myoperationTpl">
+
+	{if has_power('taskadd')}
+	<a href="javascript:" title="复制" lay-event="copy"><i class="icon ok-icon">&#xe706;</i></a>
+	{/if}
+	
+	{if has_power('task.edit')}
+	<a href="javascript:" title="编辑" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+	{/if}
+
+	{if has_power('task.del')}
+	<a href="javascript:" title="删除" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+	{/if}
+</script>
+</body>
+{/block}

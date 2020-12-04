@@ -1,0 +1,94 @@
+{extend name="base" /}{block name="body"}
+
+<body>
+<div class="ok-body">
+	<div class="layui-row layui-col-space15 total">
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text balance">0</div>
+						<div class="stat-heading">账户余额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card ">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text income">0</div>
+						<div class="stat-heading">累计收益</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text cash">0</div>
+						<div class="stat-heading">提现总额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text recharge">0</div>
+						<div class="stat-heading">充值总额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline">
+				<select name="type">
+					<option value="">业务类型</option>
+					{foreach $Think.config.sys.account_log_types as $key=>$val }
+					<option value="{$key}">{$val}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div class="layui-inline"><input class="layui-input date-range" placeholder="业务时间" autocomplete="off" name="date_range"></div>
+			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+	
+</div>
+<script>
+var user_id = getQueryParam("id");
+listPageInit({
+	toolbar:false,
+	url:'/user/account?user_id='+user_id,
+	height:'full-150',//表格默认高度
+	cols:[[
+		{field: "create_time", title: "业务时间", width: 150},
+		{field: "type", title: "业务类型", width: 150},
+		{field: "money", title: "收支金额", width: 150},
+		{field: "memo", title: "描述", width: 150},
+	]],
+	done:function(res,curr,count){
+		var $ = layui.jquery;
+		if(curr==1){
+			var account = res.account;
+			$(".total .balance").text(account.balance);
+			$(".total .income").text(account.income);
+			$(".total .spend").text(account.spend);
+			$(".total .recharge").text(account.recharge);
+		}
+	}
+})
+</script>
+</body>
+{/block}

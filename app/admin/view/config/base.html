@@ -1,0 +1,219 @@
+{extend name="base" /}{block name="body"}
+<body>
+<style>
+.layui-input-block {
+    margin-left: 130px;
+}
+
+.layui-form-label {
+    width: 100px;
+}
+</style>
+<div class="ok-body">
+	<form class="layui-form ok-form" lay-filter="formFilter">
+		<fieldset class="layui-elem-field layui-field-title">
+		  <legend>基础参数</legend>
+		  <div class="layui-field-box">
+		    	<div class="layui-form-item">
+					<label class="layui-form-label">系统名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="system_name" placeholder="请输入系统名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">公司名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="company_name" placeholder="请输入公司名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">客服电话</label>
+					<div class="layui-input-block">
+						<input type="text" name="service_tel" placeholder="请输入客服电话" autocomplete="off" class="layui-input" lay-verify="phone">
+					</div>
+				</div>
+				
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">在线客服</label>
+					<div class="layui-input-block">
+						<input type="text" name="service_line" placeholder="请输入在线客服链接地址" autocomplete="off" class="layui-input" lay-verify="">
+					</div>
+				</div>
+		  </div>
+		</fieldset>
+		
+		<fieldset class="layui-elem-field layui-field-title">
+		  <legend>提现设置</legend>
+		  <div class="layui-field-box">
+				<div class="layui-form-item">
+					<label class="layui-form-label">提现手续费</label>
+					<div class="layui-input-block">
+						<div class="layui-inline">
+						<input type="text" name="cash_fee" placeholder="请输入手续费" autocomplete="off" class="layui-input" lay-verify="number">
+						</div>
+						<div class="layui-inline">元</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">最低提现金额</label>
+					<div class="layui-input-block">
+						<div class="layui-inline">
+						<input type="text" name="cash_min" placeholder="请输入最低提现金额" autocomplete="off" class="layui-input" lay-verify="number">
+						</div>
+						<div class="layui-inline">元</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">提现倍数</label>
+					<div class="layui-input-block">
+						<div class="layui-inline">
+						<input type="text" name="cash_multiple" placeholder="请输入提现倍数" autocomplete="off" class="layui-input" lay-verify="number">
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">每日提现次数</label>
+					<div class="layui-input-block">
+						<div class="layui-inline">
+						<input type="text" name="cash_day_max" placeholder="请输入每日提现次数" autocomplete="off" class="layui-input" lay-verify="number">
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="border:0;background-color: #fff">提现说明</label>
+					<div class="layui-input-block">
+						<textarea id="cash_note" name="cash_note" placeholder="请输入提现说明" class="layui-textarea"></textarea>
+					</div>
+				</div>
+		  </div>
+		</fieldset>
+		
+		<fieldset class="layui-elem-field layui-field-title">
+		  <legend>每日任务</legend>
+		  <div class="layui-field-box">
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label"></label>
+					<div class="layui-input-block">
+						<div class="layui-inline">直属首充人数</div>
+						<div class="layui-inline"><input type="text" style="width:80px" name="today_task_recharge_count" class="layui-input" lay-verify="number"></div>
+						<div class="layui-inline">人,奖励</div>
+						<div class="layui-inline"><input type="text" style="width:80px" name="today_task_recharge_reward" class="layui-input" lay-verify="number"></div>
+						<div class="layui-inline">元</div>
+					</div>
+				</div>
+				
+		  </div>
+		</fieldset>
+		
+		
+		<fieldset class="layui-elem-field layui-field-title">
+		  <legend>其他参数</legend>
+		  <div class="layui-field-box">
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">平台运营时间</label>
+					<div class="layui-input-block">
+						<div class="layui-inline"><select name="open_begin_hour"></select></div>
+						<div class="layui-inline">~</div>
+						<div class="layui-inline"><select name="open_end_hour"></select></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">菲律宾比索PHP</label>
+					<div class="layui-input-block">
+						<div class="layui-inline"><input type="text" name="php_rate" placeholder="请输入菲律宾比索比例" autocomplete="off" class="layui-input" lay-verify="number"></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">新加坡元SGD</label>
+					<div class="layui-input-block">
+						<div class="layui-inline"><input type="text" name="sgd_rate" placeholder="请输入新加坡元比例" autocomplete="off" class="layui-input" lay-verify="number"></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">马来西亚林吉特MYR</label>
+					<div class="layui-input-block">
+						<div class="layui-inline"><input type="text" name="myr_rate" placeholder="请输入马来西亚林吉特比例" autocomplete="off" class="layui-input" lay-verify="number"></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="border:0;background-color: #fff">充值说明</label>
+					<div class="layui-input-block">
+						<textarea id="recharge_note" name="recharge_note" placeholder="请输入充值说明" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="border:0;background-color: #fff">社群说明</label>
+					<div class="layui-input-block">
+						<textarea id="community_note" name="community_note" placeholder="请输入社群说明" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="border:0;background-color: #fff">火币说明</label>
+					<div class="layui-input-block">
+						<textarea id="firecoin_note" name="firecoin_note" placeholder="请输入火币说明" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="border:0;background-color: #fff">隐藏任务助手</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="hide_assistant" lay-skin="switch" lay-text="开启|关闭">
+					</div>
+				</div>
+		  </div>
+		</fieldset>
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+
+
+
+
+	</form>
+</div>
+<script>
+formPageInit({
+	infourl:'/index/configs?gp=base',//表单数据请求路径
+	addurl:'/config/base',//新增数据请求路径
+	editurl:'/config/base',//修改数据请求路径
+	afterPageInit:function(){
+		var okUtils = layui.okUtils;
+		var form = layui.form;
+		var $ = layui.jquery;
+		for(var i=0;i<=23;i++){
+			var html = '<option value="'+i+'">'+i+'点</option>';
+			$("select[name=open_begin_hour]").append(html);
+			$("select[name=open_end_hour]").append(html);
+		}
+		form.render('select');
+		//获取页面数据
+		okUtils.ajax("/index/configs?gp=base", "post", {}, true).done(function (res) {
+			_formData = res.data;
+			form.val("formFilter", res.data);
+		})
+	},
+	afterSave:function(res){
+		
+	}
+})
+
+
+</script>
+</body>
+{/block}

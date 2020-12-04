@@ -1,0 +1,50 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<input type="hidden" name="status" value="0">
+			<div class="layui-inline">
+				<select name="status">
+					<option value="">状态</option>
+					<option value="0">未处理</option>
+					<option value="1">已处理</option>
+				</select>
+			</div>
+			<div class="layui-inline">
+			<input class="layui-input date-range" placeholder="申请时间" autocomplete="off" name="date_range">
+			</div>
+			<button class="layui-btn" lay-submit="" lay-filter="search">
+				<i class="layui-icon">&#xe615;</i>
+			</button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"反馈",
+	toolbar:'',
+	cols:[[
+		{field: "id", title: "ID", width: 80, sort: true},
+		{field: "status_name", title: "状态", width: 100},
+		{field: "create_time", title: "时间", width: 150},
+		{field: "user_id", title: "用户ID", width: 100},
+		{field: "username", title: "会员姓名", width: 100},
+		{field: "usertel", title: "会员电话", width: 150},
+		
+		{field: "name", title: "反馈姓名", width: 150},
+		{field: "tel", title: "反馈电话", width: 150},
+		{field: "note", title: "反馈内容", width: 350},
+		
+		{title: "操作", width: 80, align: "center", templet: "#myoperationTpl", fixed: "right"}
+	]]
+})
+</script>
+
+<script type="text/html" id="myoperationTpl">
+	<a href="javascript:" title="查看" lay-event="info"><i class="layui-icon">&#xe615;</i></a>
+</script>
+</body>
+{/block}

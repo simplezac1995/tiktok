@@ -1,0 +1,106 @@
+{extend name="base" /}
+{block name="body"}
+<body class="ok-body-scroll">
+<div class="ok-body">
+	<div class="layui-row">
+		<div class="layui-col-md3">
+			<div id="permissionTree"></div>
+		</div>
+		<div class="layui-col-md9">
+			<div class="layui-row">
+				<form class="layui-form layui-col-md12 ok-search">
+					<input class="layui-input" placeholder="请输入权限名" autocomplete="off" name="name">
+					<input type="hidden" name="top" value="" />
+					<button id="serarchBtn" class="layui-btn" lay-submit="" lay-filter="search">
+						<i class="layui-icon layui-icon-search"></i>
+					</button>
+				</form>
+			</div>
+			<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+		</div>
+	</div>
+</div>
+<script>
+	layui.use(["element", "table", "laydate", "tree", "okUtils"], function () {
+		let table = layui.table;
+		let laydate = layui.laydate;
+		let tree = layui.tree;
+		let okUtils = layui.okUtils;
+
+		listPageInit({
+			cols: [[
+				{type: "checkbox", fixed: "left"},
+				{field: "id", title: "ID", width: 100, sort: true, fixed: "left"},
+				{field: "name", title: "权限名称", width: 100},
+				{field: "icon", title: "图标", width: 100, templet: "#iconTpl"},
+				{field: "power", title: "权限标识", width: 150},
+				{field: "url", title: "请求路径", width: 150},
+				{field: "parentName", title: "父菜单", width: 100},
+				{field: "menu", title: "类型", width: 100, templet: "#menuTpl"},
+				{title: "操作", width: 100, templet: "#myoperationTpl", align: "center", fixed: "right"}
+			]],
+			afterDel:function(data){
+				initPermissionTree()
+			},
+			afterPageInit:function(toolFunction){
+				toolFunction.createCode=function(data){
+					okUtils.ajax("/power/createCode","post",{id:data.id},true).done(function(res){
+						 layer.msg("成功生成代码");
+					});
+				}
+			}
+		})
+		
+		initPermissionTree();
+	});
+	
+	function initPermissionTree() {
+		let tree = layui.tree;
+		let okUtils = layui.okUtils;
+		let $ = layui.jquery;
+		okUtils.ajax("/index/powerTree", "post", null, true).done(function (response) {
+			tree.render({
+				elem: '#permissionTree',
+				data: response.data,
+				showCheckbox: true,
+				id: 'demoId1',
+				isJump: true,
+				click: function (obj) {
+					var data = obj.data;
+					//layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+					var top=$("input[name=top]").val();
+					if(top && top==data.id){
+						$("input[name=top]").val("");
+					}else{
+						$("input[name=top]").val(data.id);
+					}
+					
+					$("#serarchBtn").click();
+				}
+			});
+		}).fail(function (error) {
+			console.log(error)
+		});
+	}
+</script>
+
+<script type="text/html" id="myoperationTpl">
+	<a href="javascript:" title="生成代码" lay-event="createCode"><i class="icon ok-icon">&#xe6bf;</i></a>
+	<a href="javascript:" title="编辑" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+	<a href="javascript:" title="删除" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+</script>
+
+<script type="text/html" id="menuTpl">
+	{{#  if(d.menu == 0){ }}
+	<span class="layui-btn layui-btn-xs">按钮</span>
+	{{#  } else if(d.menu == 1) { }}
+	<span class="layui-btn layui-btn-normal layui-btn-xs">菜单</span>
+	{{#  } }}
+</script>
+
+<script type="text/html" id="iconTpl">
+	<span class="{{d.font_family}}">{{d.icon?d.icon:''}}</span>
+</script>
+
+</body>
+{/block}

@@ -1,0 +1,142 @@
+{extend name="base" /}{block name="body"}
+
+<body>
+<div class="ok-body">
+	<table class="layui-hide" id="dataTable1" lay-filter="dataTable1"></table>
+	<table class="layui-hide" id="dataTable2" lay-filter="dataTable2"></table>
+	<table class="layui-hide" id="dataTable3" lay-filter="dataTable3"></table>
+</div>
+<script>
+var user_id = getQueryParam("id");
+layui.use(['table','okLayer','okUtils','jquery'], function () {
+	let table = layui.table;
+	let okLayer = layui.okLayer;
+	let okUtils = layui.okUtils;
+	let $ = layui.jquery;
+	
+	let dataTable1 = table.render({
+		title:"一级团队",
+		elem: "#dataTable1",
+		url: "/user/teamUser?type=1&user_id="+user_id,
+		method:"post",
+		toolbar: '#mytoolbarTpl1',
+		defaultToolbar:[],
+		height:"300",
+		cols: [[
+			{field: "id", title: "会员ID", width: 150},
+			{title: "会员账号", width: 150,templet:"#teamTpl"},
+			{field: "team", title: "下级人数", width: 150},
+			{field: "vipcard", title: "等级", width: 150},
+			{field: "creat_time", title: "注册时间", width: 150},
+		]],
+		done: function (res, curr, count) {
+			if(curr==1){
+				res.total.forEach(function(row){
+					$("#total1").append('<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>');
+				})
+			}
+		}
+	});
+	
+	
+	let dataTable2 = table.render({
+		title:"二级团队",
+		elem: "#dataTable2",
+		url: "/user/teamUser?type=2&user_id="+user_id,
+		method:"post",
+		toolbar: '#mytoolbarTpl2',
+		defaultToolbar:[],
+		height:"300",
+		cols: [[
+			{field: "id", title: "会员ID", width: 150},
+			{title: "会员账号", width: 150,templet:"#teamTpl"},
+			{field: "team", title: "下级人数", width: 150},
+			{field: "vipcard", title: "等级", width: 150},
+			{field: "creat_time", title: "注册时间", width: 150},
+		]],
+		done: function (res, curr, count) {
+			if(curr==1){
+				res.total.forEach(function(row){
+					$("#total2").append('<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>');
+				})
+			}
+		}
+	});
+	
+	
+	let dataTable3 = table.render({
+		title:"三级团队",
+		elem: "#dataTable3",
+		url: "/user/teamUser?type=3&user_id="+user_id,
+		method:"post",
+		toolbar: '#mytoolbarTpl3',
+		defaultToolbar:[],
+		height:"300",
+		cols: [[
+			{field: "id", title: "会员ID", width: 150},
+			{title: "会员账号", width: 150,templet:"#teamTpl"},
+			{field: "team", title: "下级人数", width: 150},
+			{field: "vipcard", title: "等级", width: 150},
+			{field: "creat_time", title: "注册时间", width: 150},
+		]],
+		done: function (res, curr, count) {
+			if(curr==1){
+				res.total.forEach(function(row){
+					$("#total3").append('<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>');
+				})
+			}
+		}
+	});
+	
+	table.on("tool(dataTable1)", function (obj) {
+		let data = obj.data;
+		let event = obj.event;
+		if(event=="team"){
+			layui.okLayer.open("团队信息("+data.username+")","/pages/user/team?id="+data.id, "90%", "90%", null, function () {
+			})
+		}
+	});
+	
+	table.on("tool(dataTable2)", function (obj) {
+		let data = obj.data;
+		let event = obj.event;
+		if(event=="team"){
+			layui.okLayer.open("团队信息("+data.username+")","/pages/user/team?id="+data.id, "90%", "90%", null, function () {
+			})
+		}
+	});
+	
+	table.on("tool(dataTable3)", function (obj) {
+		let data = obj.data;
+		let event = obj.event;
+		if(event=="team"){
+			layui.okLayer.open("团队信息("+data.username+")","/pages/user/team?id="+data.id, "90%", "90%", null, function () {
+			})
+		}
+	});
+})
+</script>
+
+<script type="text/html" id="mytoolbarTpl1">
+<div id="total1">
+<div class="layui-inline"><b>一级团队</b></div>
+</div>
+</script>
+
+<script type="text/html" id="mytoolbarTpl2">
+<div id="total2">
+<div class="layui-inline"><b>二级团队</b></div>
+</div>
+</script>
+
+<script type="text/html" id="mytoolbarTpl3">
+<div id="total3">
+<div class="layui-inline"><b>三级团队</b></div>
+</div>
+</script>
+
+<script type="text/html" id="teamTpl">
+	<a href="javascript:" lay-event="team">{{d.username}}</a>
+</script>
+</body>
+{/block}

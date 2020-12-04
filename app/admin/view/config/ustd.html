@@ -1,0 +1,96 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<form class="layui-form ok-form" lay-filter="formFilter">
+		<div class="layui-form-item">
+			<label class="layui-form-label">APP链接</label>
+			<div class="layui-input-block">
+				<input type="text" name="app_link" placeholder="请输入APP链接" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">TRC20二维码</label>
+			<div class="layui-input-block">
+				<div class="layui-col-md3 layui-col-xs5">
+					<div class="layui-upload-list thumbBox mag0 magt3 imgUpload" style="margin: 0" name="qrcode">
+						<img id="qrcode" class="layui-upload-img thumbImg" src="">
+						<input type="hidden" name="qrcode" value="">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">充值链接</label>
+			<div class="layui-input-block">
+				<input type="text" name="recharge_link" placeholder="请输入充值链接" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇率</label>
+			<div class="layui-input-block">
+				<input type="text" name="rate" placeholder="请输入汇率" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">ERC20二维码</label>
+			<div class="layui-input-block">
+				<div class="layui-col-md3 layui-col-xs5">
+					<div class="layui-upload-list thumbBox mag0 magt3 imgUpload" style="margin: 0" name="erc_qrcode">
+						<img id="erc_qrcode" class="layui-upload-img thumbImg" src="">
+						<input type="hidden" name="erc_qrcode" value="">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">充值链接</label>
+			<div class="layui-input-block">
+				<input type="text" name="erc_recharge_link" placeholder="请输入充值链接" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+
+
+
+
+	</form>
+</div>
+<script>
+formPageInit({
+	infourl:'/index/configs?gp=ustd',//表单数据请求路径
+	addurl:'/config/ustd',//新增数据请求路径
+	editurl:'/config/ustd',//修改数据请求路径
+	afterPageInit:function(){
+		var okUtils = layui.okUtils;
+		var form = layui.form;
+		var $ = layui.jquery;
+		//获取页面数据
+		okUtils.ajax("/index/configs?gp=ustd", "post", {}, true).done(function (res) {
+			_formData = res.data;
+			form.val("formFilter", res.data);
+			$("#qrcode").attr("src",res.data.qrcode);
+			$("#erc_qrcode").attr("src",res.data.erc_qrcode);
+		})
+	},
+	afterSave:function(res){
+		
+	}
+})
+
+
+</script>
+</body>
+{/block}

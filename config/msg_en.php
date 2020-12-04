@@ -1,0 +1,42 @@
+<?php
+// +----------------------------------------------------------------------
+// | 系统提示信息
+// +----------------------------------------------------------------------
+
+return [
+    'login_check'=>'Please login first',
+    'login_exp'=>'Login expired',
+    'param_error'=>'PARAMETER ERROR',
+    'balance_error'=>'Not sufficient funds',
+    'answer_error'         =>          "Wrong answer",
+    'system_open_time'     =>          "Operation time of the platform is：",
+    'cash_money_int'=>'The withdrawal amount must be a round number',
+    'cash_money_min'=>'The minimum withdrawal amount is:',
+    'cash_money_multiple'=>'The withdrawal amount must be an integer multiple of {p1}',
+    'cash_today_max'=>'Withdrawals today have been capped',
+    'cash_password_error'=>'Withdrawal password error',
+    'cash_vip_error'=>'Non-members cannot withdraw cash',
+    'bind_bank'=>'Please bind bank card',
+    'set_usdt'=>'Please set the USTD link',
+    'username_not_exist'=>'The login account does not exist',
+    'unset_answer'=>'No encryption information is set',
+    'username_or_password_error'=>'Incorrect user name or password',
+    'login_password_error'=>'Password error more than 10 times, please try again tomorrow',
+    'share_code_error'=>'The share code does not exist',
+    'login_tel_exist'=>'Mobile phone number/email address has been registered',
+    'day'=>'day',
+    'hour'=>'hour',
+    'minute'=>'minute',
+    'second'=>'second',
+    'buy_notice'=>"{p1} Bought an {p2} member ",
+    'taks_max'=>'The number of tasks remaining today has been used up',
+    'task_not_exist'=>'Task does not exist',
+    'task_no_surplus'=>'The mission has been completed',
+    'task_exp'=>'Mission over',
+    'task_vip_limit'=>'Membership level limit',
+    'task_alread_apply'=>'You have already claimed this task',
+    'task_not_complate'=>'You have an unfinished task',
+    'task_apply_cancel'=>'The current status cannot be cancelled',
+    'today_recharge_task_status_uncomplete'=>'Not reached',
+    'today_recharge_task_status_complete'=>'Completed',
+];

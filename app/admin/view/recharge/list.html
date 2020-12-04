@@ -1,0 +1,190 @@
+{extend name="base" /}{block name="body"}
+<body>
+<style>
+.layui-table-view .layui-table[lay-size=sm] tbody .layui-table-cell{
+	height: 80px;
+}
+</style>
+<div class="ok-body">
+	<div class="layui-row">
+		<div class="layui-inline">
+		<form class="layui-form layui-col-md12 ok-search">
+			<input type="hidden" name="status" value="0">
+			<div class="layui-inline">
+			<input class="layui-input" placeholder="会员ID" autocomplete="off" name="user_id">
+			<input class="layui-input" placeholder="会员电话" autocomplete="off" name="tel">
+			<input class="layui-input date-range" placeholder="申请时间" autocomplete="off" name="date_range">
+			</div>
+			<button class="layui-btn" lay-submit="" lay-filter="search">
+				<i class="layui-icon">&#xe615;</i>
+			</button>
+		</form>
+		</div>
+		<div class="layui-inline layui-btn-group toolbtn" style="float: right;">
+			<button type="button" class="layui-btn layui-btn-warm">总USDT数量：<span id="totalUsdt">0</span></button>
+	  		<button type="button" class="layui-btn layui-btn-danger">总金额：<span id="totalMoney">0</span></button>
+		</div>
+	</div>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"充值申请",
+	toolbar:'#mytoolbarTpl',
+	defaultToolbar: ['filter', 'exports'],
+	done:function(res, curr, count){
+		let $ = layui.jquery;
+		var s = $("input[name=status]").val();
+		if(s=="")s="All"
+		$(".toolbtn .layui-btn-primary").removeClass("layui-btn-primary");
+		$(".toolbtn button[lay-event=searchStatus"+s+"]").addClass("layui-btn-primary");
+		
+		
+		//加载列表统计数据
+		var data = {};
+		$(".ok-search").serializeArray().forEach(function(row){
+			  data[row.name]=row.value;
+		});
+		
+		$.post("/recharge/listReport",data,function(res){
+			var data = res.data;
+			$("#totalMoney").text(data.totalMoney);
+			$("#totalUsdt").text(data.totalUsdt);
+		});
+	},
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 70, sort: true},
+		{field: "username", title: "会员名称", width: 150},
+		{field: "vipcard", title: "购买等级", width: 150},
+		{field: "memo", title: "备注", width: 150},
+		{field: "channel", title: "支付方式", width: 120},
+		{field: "money", title: "充值金额", width: 120},
+		{field: "money2", title: "USDT个数", width: 120},
+		{field: "status_name", title: "状态", width: 100},
+		{field: "sn", title: "订单号", width: 200},
+		{field: "user_id", title: "会员ID", width: 150},
+		// {field: "sysbank",title: "银行信息",width: 200},
+		{field: "user_usdt_link",title: "会员USDT地址",width: 200},
+		{field: "sys_usdt_link",title: "充值USDT地址",width: 200},
+		{field: "create_time", title: "提交时间", width: 150},
+		{title: "操作", width: 80, align: "center", templet: "#myoperationTpl", fixed: "right"}
+	]],
+	afterPageInit:function(toolFunction){
+		
+		let okUtils = layui.okUtils;
+		let $ = layui.jquery;
+		function serachStatus(s){
+			$("input[name=status]").val(s);
+			$("button[lay-filter=search]").click();
+		}
+		
+		function check(status){
+			var checkStatus = layui.table.checkStatus('dataTable');
+            var rows = checkStatus.data.length;
+            if (rows > 0) {
+                var ids = [];
+                for (var i = 0; i < rows; i++) {
+                    ids.push(checkStatus.data[i].id);
+                }
+                
+                if(status=="-1"){
+                	layer.prompt({
+               		  formType: 2,
+               		  title: '请输入失败理由',
+               		  area: ['800px', '50px'] //自定义文本域宽高
+               		}, function(value, index, elem){
+               			var memo = value;
+               			if(!memo){
+        					layui.layer.msg("请输入失败理由");
+        					return;
+        				}
+               			
+               			layui.okLayer.confirm("确定充值失败吗？", function(i){
+            				okUtils.ajax("/recharge/batchCheck", "post", {ids:ids,status:status,memo:memo}, true).done(function (response) {
+                            	layui.table.reload('dataTable');
+                            	layer.close(index);
+                            	layer.close(i);
+            				}).fail(function (error) {
+            					console.log(error)
+            				});
+            			})
+               		  	
+               		});
+    			}else{
+    				layui.okLayer.confirm("确定充值成功吗？", function(index){
+        				okUtils.ajax("/recharge/batchCheck", "post", {ids:ids,status:status}, true).done(function (response) {
+                        	layui.table.reload('dataTable');
+                        	layer.close(index);
+        				}).fail(function (error) {
+        					console.log(error)
+        				});
+        			})
+    			}
+            } else {
+                layer.msg("未选择有效数据");
+            }
+		}
+		
+		toolFunction.searchStatusAll=function(data){
+			serachStatus("");
+		}
+		
+		toolFunction.searchStatus0=function(data){
+			serachStatus("0");
+		}
+		
+		toolFunction.searchStatus1=function(data){
+			serachStatus("1");
+		}
+		
+		toolFunction.searchStatus2=function(data){
+			serachStatus("2");
+		}
+		
+		toolFunction.checkPass=function(data){
+			check(1);
+		}
+		
+		toolFunction.checkFail=function(data){
+			check(-1);
+		}
+		toolFunction.exportToday=function(data){
+			location.href="/recharge/exportToday";
+		}
+	}
+})
+</script>
+<script type="text/html" id="mytoolbarTpl">
+	<div class="layui-btn-group toolbtn">
+  		<button type="button" class="layui-btn" lay-event="searchStatusAll">全部</button>
+		<button type="button" class="layui-btn" lay-event="searchStatus0">待审核</button>
+		<button type="button" class="layui-btn" lay-event="searchStatus1">成功</button>
+  		<button type="button" class="layui-btn" lay-event="searchStatus2">失败</button>
+	</div>
+
+	<div class="layui-inline" style="margin-left:50px">
+		<button type="button" class="layui-btn layui-btn-normal" lay-event="checkPass" style="display:none;">批量审核通过</button>
+		<button type="button" class="layui-btn layui-btn-danger" lay-event="checkFail">批量审核失败</button>
+
+		<button type="button" class="layui-btn layui-btn-warm" lay-event="exportToday">导出今日数据</button>
+	</div>
+</script>
+<script type="text/html" id="userBankTpl">
+	开户银行：{{d.user_bank_name}}<br/>
+	分行名称：{{d.user_bank_branch}}<br/>
+	开户人：{{d.user_bank_username}}<br/>
+	银行卡号：{{d.user_bank_account}}<br/>
+</script>
+<script type="text/html" id="sysBankTpl">
+	<div class="layui-row">开户银行：{{d.sys_bank_name}}</div>
+	<div class="layui-row">银行卡号：{{d.sys_bank_account}}</div>
+</script>
+
+<script type="text/html" id="myoperationTpl">
+	<a href="javascript:" title="查看" lay-event="info"><i class="layui-icon">&#xe615;</i></a>
+</script>
+</body>
+{/block}

@@ -1,0 +1,131 @@
+{extend name="base" /} {block name="body"}
+
+<body>
+	<div class="ok-body">
+		<!--form表单-->
+		<form class="layui-form ok-form" lay-filter="formFilter">
+			<input type="hidden" name="id" />
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label">上级权限</label>
+				<div class="layui-input-block">
+					<div id="demo3" class="xm-select-demo"></div>
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label">权限名称</label>
+				<div class="layui-input-block">
+					<input type="text" name="name" placeholder="请输入权限名称"
+						autocomplete="off" class="layui-input" lay-verify="required">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">字体库</label>
+				<div class="layui-input-block">
+					<select name="font_family">
+						<option value="ok-icon">okadmin</option>
+						<option value="layui-icon">layui</option>
+						<option value="icon iconfont">阿里</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label"></label>
+				<div class="layui-input-block">
+					<a href="https://www.layui.com/doc/element/icon.html" target="_blank" class="layui-btn layui-btn-normal">layui字体图标</a>
+					<a href="http://ok-admin.xlbweb.cn/pages/help/ok_font.html" target="_blank" class="layui-btn layui-btn-normal">okadmin字体图标</a>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">字体图标</label>
+				<div class="layui-input-block">
+					<input type="text" name="icon" placeholder="请输入字体图标  Unicode"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">权限标识</label>
+				<div class="layui-input-block">
+					<input type="text" name="power"
+						placeholder="请输入权限标识  一般为 controller.action" autocomplete="off"
+						class="layui-input" lay-verify="required">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">是否菜单</label>
+				<div class="layui-input-block">
+					<input type="radio" name="menu" value="1" title="是" checked>
+					<input type="radio" name="menu" value="0" title="否">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">链接</label>
+				<div class="layui-input-block">
+					<input type="text" name="url" class="layui-input"
+						placeholder="请输入链接，非菜单或有子菜单可不填"">
+				</div>
+			</div>
+			
+			<div class="layui-form-item">
+				<label class="layui-form-label">排序</label>
+				<div class="layui-input-block">
+					<input type="text" name="sort" class="layui-input" value="100">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<script>
+	formPageInit({
+		beforeSave:function(data){
+			if(data.top==""){
+				layer.msg("请选择上级目录");
+				return false;
+			}
+			
+			return true;
+		},
+		afterSave:function(){
+			parent.initPermissionTree();
+			parent.layer.close(parent.layer.getFrameIndex(window.name));
+		},
+		afterPageInit:function(){
+			layui.okUtils.ajax("/index/powerTree",'get',null,true).done(function(res){
+				var def = _formData.top;
+				console.log(xmSelect);
+				var demo3 = xmSelect.render({
+					el: '#demo3', 
+					name:'top',
+					model: { label: { type: 'text' } },
+					radio: true,
+					clickClose: true,
+					initValue: [def],
+					disabled: def?true:false,
+					tree: {
+						show: true,
+						strict: false,
+						expandedKeys: [ 0 ],
+					},
+					height: 'auto',
+					data(){
+						return res.data
+					}
+				})
+			})
+		}
+	})
+</script>
+</body>
+{/block}

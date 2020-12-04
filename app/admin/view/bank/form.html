@@ -1,0 +1,53 @@
+{extend name="base" /}{block name="body"}
+<script type="text/javascript" charset="utf-8" src="/admin/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/admin/js/ueditor/ueditor.all.js"></script>
+<body>
+<div class="ok-body">
+	<form class="layui-form ok-form layui-form-pane" lay-filter="formFilter">
+		<input type="hidden" name="id" />
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">银行</label>
+			<div class="layui-input-block">
+				<input type="text" name="bank_name" placeholder="请输入银行名称" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">支店</label>
+			<div class="layui-input-block">
+				<input type="text" name="branch" placeholder="请输入分行" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">店番</label>
+			<div class="layui-input-block">
+				<input type="text" name="bank_num" placeholder="请输入店番" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">姓名</label>
+			<div class="layui-input-block">
+				<input type="text" name="user_name" placeholder="请输入持卡人" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">账号</label>
+			<div class="layui-input-block">
+				<input type="text" name="account" placeholder="请输入银行账户" autocomplete="off" class="layui-input" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+
+
+
+
+	</form>
+</div>
+<script>formPageInit()</script>
+</body>
+{/block}

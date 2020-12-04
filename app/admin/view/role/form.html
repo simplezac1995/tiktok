@@ -1,0 +1,82 @@
+{extend name="base" /}
+{block name="body"}
+<body>
+<div class="ok-body">
+	<!--form表单-->
+	<form class="layui-form ok-form" lay-filter="formFilter">
+		<div class="layui-row">
+			<div class="layui-col-md6">
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色名</label>
+					<div class="layui-input-block">
+						<input type="text" name="name" placeholder="请输入角色名" autocomplete="off" class="layui-input"
+						       lay-verify="required">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<input type="text" name="memo" placeholder="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<input type="hidden" name="id" />
+						<input type="hidden" name="powers" />
+						<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-md3" style="padding: 5px">
+				<div id="permissionTree" style="border: 1px #e2e2e2 solid;"></div>
+			</div>
+		</div>
+		
+	</form>
+</div>
+<script>
+function getPowers(objs){
+	var powers = "";
+	objs.forEach(function(row){
+		if(row.power)powers += ","+row.power;
+		if(row.children){
+			powers+=","+getPowers(row.children);
+		}
+	})
+	if(powers) powers = powers.substr(1);
+	return powers;
+}
+formPageInit({
+	beforeSave:function(data){
+		var $ = layui.jquery;
+		var checkData = layui.tree.getChecked('demoId');
+		console.log(checkData);
+		
+		var powers = getPowers(checkData);
+		console.log(powers);
+		
+		data.powers=powers;
+		
+		return true;
+	},
+	afterPageInit:function(){
+		layui.okUtils.ajax("/index/powerTree",'post',{type:'role',id:_formData.id},true).done(function(res){
+			layui.tree.render({
+				elem: '#permissionTree',
+				data: res.data,
+				showCheckbox: true,
+				id: 'demoId',
+				isJump: true,
+				click: function (obj) {
+					var data = obj.data;
+					layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+				}
+			});
+		})
+	},
+	models:['tree']
+})
+</script>
+</body>
+{/block}

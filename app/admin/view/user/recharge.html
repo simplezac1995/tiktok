@@ -1,0 +1,70 @@
+{extend name="base" /}{block name="body"}
+
+<body>
+<div class="ok-body">
+	<form class="layui-form ok-form layui-form-pane" lay-filter="formFilter">
+		<div class="layui-form-item">
+			<label class="layui-form-label">账号</label>
+			<div class="layui-input-block">
+				<input type="text" name="username" readonly="readonly" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">充值金额</label>
+			<div class="layui-input-block">
+				<input type="text" name="money"  placeholder="请输入充值金额" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<input type="text" name="memo"  placeholder="请输入备注信息" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="button" class="layui-btn" id="save">确定</button>
+			</div>
+		</div>
+	</form>
+</div>
+<script>
+layui.use(["jquery","layer","okLayer", "okUtils"], function () {
+	let layer = layui.layer;
+	let okLayer = layui.okLayer;
+	let okUtils = layui.okUtils;
+	let $ = layui.jquery;
+	
+	var id = getQueryParam("id");
+	var account = getQueryParam("account");
+	
+	$("input[name=username]").val(account);
+	
+	$("#save").on("click",function(){
+		var money = $("input[name=money]").val();
+		if(!money || isNaN(money)){
+			layer.msg('请正确输入充值金额');
+			return;
+		}
+		
+		money = parseInt(money);
+		if(money<=0){
+			//layer.msg('充值金额必须是大于0的整数');
+			//return;
+		}
+		var memo = $("input[name=memo]").val();
+		okUtils.ajax("/user/recharge", "post",{money:money,memo:memo,user_id:id}, true).done(function (res) {
+			okLayer.greenTickMsg("充值成功", function () {
+				parent.layer.close(parent.layer.getFrameIndex(window.name));
+			});
+		}).fail(function (error) {
+		    console.log(error);
+		});
+	})
+})
+</script>
+</body>
+{/block}

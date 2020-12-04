@@ -1,0 +1,42 @@
+<?php
+// +----------------------------------------------------------------------
+// | 系统提示信息
+// +----------------------------------------------------------------------
+
+return [
+    'login_check'=>'请先登入',
+    'login_exp'=>'登入过期',
+    'param_error'=>'参数错误',
+    'balance_error'=>'余额不足',
+    'answer_error'         =>          "密保答案错误",
+    'system_open_time'     =>          "平台运营时间为：",
+    'cash_money_int'=>'提现金额必须是一个整数',
+    'cash_money_min'=>'最底提现金额为：',
+    'cash_money_multiple'=>'提现金额必须是{p1}的整数倍',
+    'cash_today_max'=>'今日提现已上限',
+    'cash_password_error'=>'提现密码错误',
+    'cash_vip_error'=>'非会员无法提现',
+    'bind_bank'=>'请绑定银行卡',
+    'set_usdt'=>'请设置USTD链接',
+    'username_not_exist'=>'登入账户不存在',
+    'unset_answer'=>'未设置密保信息',
+    'username_or_password_error'=>'用户名或密码错误',
+    'login_password_error'=>'密码错误超过10次,请明天再试',
+    'share_code_error'=>'分享码不存在',
+    'login_tel_exist'=>'手机号/邮箱已被注册',
+    'day'=>'天',
+    'hour'=>'小时',
+    'minute'=>'分',
+    'second'=>'秒',
+    'buy_notice'=>"前 {p1}购买了{p2}会员",
+    'taks_max'=>'今日剩余任务数已用完',
+    'task_not_exist'=>'任务不存在',
+    'task_no_surplus'=>'任务已被领取完成',
+    'task_exp'=>'任务已结束',
+    'task_vip_limit'=>'会员等级限制',
+    'task_alread_apply'=>'您已经领取过此任务',
+    'task_not_complate'=>'您有任务未完成',
+    'task_apply_cancel'=>'当前状态无法取消',
+    'today_recharge_task_status_uncomplete'=>'未达到',
+    'today_recharge_task_status_complete'=>'已完成',
+];

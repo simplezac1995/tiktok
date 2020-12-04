@@ -1,0 +1,111 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline">
+				<select name="vipcard_id">
+					<option value="">会员等级</option>
+				</select>
+			</div>
+			<div class="layui-inline"><input class="layui-input" placeholder="会员ID" autocomplete="off" name="user_id"></div>
+			<div class="layui-inline"><input class="layui-input" placeholder="账号/姓名" autocomplete="off" name="kw"></div>
+			<div class="layui-inline"><input class="layui-input date-range" placeholder="注册时间" autocomplete="off" name="date_range"></div>
+			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"会员",
+	size:"lg",
+	toolbar:"#mytoolbarTpl",
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "会员ID", width: 90, sort: true},
+		{field: "username", title: "账号", width: 150},
+		{field: "name", title: "姓名", width: 150},
+		{field: "vipcard", title: "会员等级", width: 150},
+		{field: "balance", title: "余额", width: 150},
+		{field: "income", title: "累计奖励", width: 150},
+		{field: "team", title: "销售团队", width: 150,templet:"#teamTpl"},
+		{field: "create_time", title: "注册时间", width: 150},
+		{field: "top1", title: "上级ID", width: 150},
+		{field: "ip", title: "登入IP", width: 150},
+		{title: "操作", width: 300, align: "center", templet: "#myoperationTpl", fixed: "right"}
+	]],
+	afterPageInit:function(toolFunction){
+		var $ = layui.jquery;
+		var form = layui.form;
+		var okUtils = layui.okUtils;
+		okUtils.ajax("/index/vipcards", "get", null, true).done(function (res) {
+		    res.data.forEach(function(row){
+		    	$("select[name=vipcard_id]").append('<option value="'+row.id+'">'+row.name+'</option>');
+		    });
+		    form.render('select');
+		}).fail(function (error) {
+		    console.log(error);
+		});
+		
+		toolFunction.changeTeam=function(data){
+			layui.okLayer.open("调整团队","/pages/user/changeTeam?id="+data.id+"&account="+data.username, "60%", "60%", null, function () {
+				layui.table.reload('dataTable');
+			})
+		}
+		
+		toolFunction.recharge=function(data){
+			layui.okLayer.open("充值","/pages/user/recharge?id="+data.id+"&account="+data.username, "60%", "60%", null, function () {
+				layui.table.reload('dataTable');
+			})
+		}
+		
+		toolFunction.account=function(data){
+			layui.okLayer.open("账户信息("+data.username+")","/pages/user/account?id="+data.id, "60%", "80%", null, function () {
+			})
+		}
+		
+		toolFunction.team=function(data){
+			layui.okLayer.open("团队信息("+data.username+")","/pages/user/team?id="+data.id, "60%", "80%", null, function () {
+			})
+		}
+	}
+})
+</script>
+
+<script type="text/html" id="myoperationTpl">
+	{if has_power('user.changeTeam')}
+	<a href="javascript:" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="changeTeam">调整团队</a>
+	{/if}
+
+	{if has_power('user.recharge')}
+	<a href="javascript:" class="layui-btn layui-btn-xs layui-btn-warm" lay-event="recharge">充值</a>
+	{/if}
+
+	{if has_power('user.account')}
+	<a href="javascript:" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="account">账户</a>
+	{/if}
+
+	{if has_power('user.edit')}
+	<a href="javascript:" class="layui-btn layui-btn-xs layui-btn-primary" lay-event="edit">详情</a>
+	{/if}
+</script>
+
+<script type="text/html" id="teamTpl">
+	{if has_power('user.teamUser')}
+	<a href="javascript:" lay-event="team">{{d.team}}</a>
+	{else /}{{d.team}}
+	{/if}
+</script>
+
+
+<script type="text/html" id="mytoolbarTpl">
+	<div class="layui-btn-container">
+		{if has_power('user.add')}
+		<button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+		{/if}
+	</div>
+	</script>
+</body>
+{/block}

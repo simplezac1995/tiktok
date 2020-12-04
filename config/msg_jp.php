@@ -1,0 +1,41 @@
+<?php
+// +----------------------------------------------------------------------
+// | 系统提示信息
+// +----------------------------------------------------------------------
+
+return [
+    'login_check'=>'先に登録してください',
+    'login_exp'=>'登録期限が切れています',
+    'param_error'=>'パラメータエラー',
+    'balance_error'=>'残高が足りない',
+    'answer_error'         =>          "答えが間違っています",
+    'system_open_time'     =>          "プラットフォームの運営時間は：",
+    'cash_money_int'=>'現金引き出しは整数でなければなりません',
+    'cash_money_min'=>'最小引き出し額は：',
+    'cash_money_multiple'=>'引き出し額は{p1}の整数倍でなければなりません',
+    'cash_today_max'=>'今日引き出し額は上限になりました',
+    'cash_password_error'=>'引き出しのパスワードが間違いました',
+    'bind_bank'=>'銀行カードをバインドしてください',
+    'set_usdt'=>'USTDリンクを設定してください',
+    'username_not_exist'=>'ログインアカウントが存在しません',
+    'unset_answer'=>'秘密情報は設定されていません',
+    'username_or_password_error'=>'ユーザー名またはパスワードが間違った',
+    'login_password_error'=>'パスワードが10回以上間違っています、明日もう一度お試しください',
+    'share_code_error'=>'共有コードは存在しません',
+    'login_tel_exist'=>'電話番号が登録されました',
+    'day'=>'日',
+    'hour'=>'時間',
+    'minute'=>'分',
+    'second'=>'秒',
+    'buy_notice'=>"前の{p1}が{p2}vipを購入しました",
+    'taks_max'=>'今日残りの任務数はすでになくなりました',
+    'task_not_exist'=>'任務は存在しません',
+    'task_no_surplus'=>'任務はすでに受領済みです',
+    'task_exp'=>'任務は終了しました',
+    'task_vip_limit'=>'VIPレベル制限',
+    'task_alread_apply'=>'この任務はすでに受け取りました',
+    'task_not_complate'=>'未完成の任務があります',
+    'task_apply_cancel'=>'現在の状態はキャンセルできません',
+    'today_recharge_task_status_uncomplete'=>'未达到',
+    'today_recharge_task_status_complete'=>'已完成',
+];

@@ -1,0 +1,29 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline"><input class="layui-input" placeholder="卡号" autocomplete="off" name="kw"></div>
+			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<script>
+listPageInit({
+	name:"数据",
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 80, sort: true},
+		{field: "bank_name", title: "银行", width: 150},
+		{field: "branch", title: "支店", width: 150},
+		{field: "bank_num", title: "店番", width: 150},
+		{field: "user_name", title: "姓名", width: 150},
+		{field: "account", title: "账号", width: 250},
+		{title: "操作", width: 80, align: "center", templet: "#operationTpl", fixed: "right"}
+	]]
+})
+</script>
+</body>
+{/block}

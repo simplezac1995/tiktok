@@ -1,0 +1,122 @@
+{extend name="base" /} {block name="body"}
+<link href="/admin/js/webuploader/webuploader.css">
+<script src="/admin/js/jquery-3.4.1.min.js"></script>
+<script src="/admin/js/webuploader/webuploader.js"></script>
+<style>
+.webuploader-element-invisible{
+	opacity:0
+}
+
+.layui-field-box .item{
+	height: 25px;
+}
+</style>
+<body>
+	<form class="layui-form" action="" style="margin-top:10px;">
+		<div class="layui-form-item" pane>
+			<label class="layui-form-label">文件选择</label>
+			<div class="layui-input-block">
+				<div class="layui-inline">
+				<button id="picker" type="button" class="layui-btn layui-btn-primary">选择文件</button></div>
+				<div class="layui-inline">
+				<input id="filename" type="text" class="layui-input" style="width:350px" placeholder="请选择文件，最大不超过15M" readonly="readonly" />
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<div class="layui-progress layui-progress-big" lay-filter="demo" lay-showPercent="true" style="width:90%">
+				  <div class="layui-progress-bar" lay-percent="0%"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button type="button" class="layui-btn" id="sureBtn">立即上传</button>
+		      
+		      <a href="/admin/file/任务导入模板文件.xlsx" target="_blank">模板下载</a>
+		    </div>
+		  </div>
+		  
+		  
+		<fieldset class="layui-elem-field">
+		  <legend>日志</legend>
+		  <div id="logs" class="layui-field-box" style="height: 200px;overflow-y: scroll;">
+		   		
+		  </div>
+		</fieldset>
+	</form>
+	
+	
+</body>
+
+<script>
+
+var element,okUtils;
+layui.use(['element','layer','okUtils','jquery','form'], function(){
+	element = layui.element;
+	okUtils = layui.okUtils;
+	form = layui.form;
+	$ = layui.jquery;
+});
+
+var loadIndex;
+var remoteFile;
+var remoteNames;
+var importNum=0;
+var batch=0;
+var uploader = chunkUpload({
+	url:'/task/upload?local=true',
+	pick:'#picker',
+	uploadProgress:function(percentage){
+		element.progress('demo', percentage * 100 + '%');
+	},
+	fileQueued:function(file){
+		$("#filename").val(file.name);
+	},
+	uploadSuccess:function(res){
+		console.log("文件上传成功");
+		importNum=0;
+		$("#filename").val("");
+		if(res.code==0){
+			setLog("文件上传成功");
+			remoteFile = res.file;
+			importSheet();
+		}else{
+			layui.layer.msg(res.msg);
+		}
+	}
+});
+
+function importSheet(){
+	if(remoteFile){
+		setLog("准备导入工作表数据");
+		var param = {file:remoteFile};
+		
+		okUtils.ajax("/task/import","post",param,true).done(function(res){
+			if(res.code==0){
+				setLog("完成工作表数据导入");
+				setLog("共导入"+res.data.num+"条数据");
+			}else{
+				layui.layer.msg(res.msg);
+			}
+		});
+	}else{
+		setLog("本次操作共导入"+importNum+"条数据");
+	}
+}
+
+
+function setLog(msg){
+	$("#logs").prepend('<div class="item">'+msg+'</div>');
+}
+
+$("#sureBtn").click(function(){
+	batch = parseInt(new Date().getTime()/1000);
+	uploader.upload();
+});
+</script>
+
+{/block}

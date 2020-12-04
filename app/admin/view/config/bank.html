@@ -1,0 +1,72 @@
+{extend name="base" /}{block name="body"}
+<body>
+<div class="ok-body">
+	<form class="layui-form ok-form" lay-filter="formFilter">
+		<div class="layui-form-item">
+			<label class="layui-form-label">开户银行</label>
+			<div class="layui-input-block">
+				<input type="text" name="bank_name" placeholder="请输入开户银行" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">分行名称</label>
+			<div class="layui-input-block">
+				<input type="text" name="bank_branch" placeholder="请输入分行名称" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">开户名</label>
+			<div class="layui-input-block">
+				<input type="text" name="bank_username" placeholder="请输入开户名" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		<div class="layui-form-item">
+			<label class="layui-form-label">银行卡号</label>
+			<div class="layui-input-block">
+				<input type="text" name="bank_account" placeholder="请输入银行卡号" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		
+		
+		
+		
+		
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="save">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+
+
+
+
+	</form>
+</div>
+<script>
+formPageInit({
+	infourl:'/index/configs?gp=bank',//表单数据请求路径
+	addurl:'/config/bank',//新增数据请求路径
+	editurl:'/config/bank',//修改数据请求路径
+	afterPageInit:function(){
+		var okUtils = layui.okUtils;
+		var form = layui.form;
+		var $ = layui.jquery;
+		//获取页面数据
+		okUtils.ajax("/index/configs?gp=bank", "post", {}, true).done(function (res) {
+			_formData = res.data;
+			form.val("formFilter", res.data);
+		})
+	},
+	afterSave:function(res){
+		
+	}
+})
+
+
+</script>
+</body>
+{/block}

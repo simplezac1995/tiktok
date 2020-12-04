@@ -1,0 +1,83 @@
+{extend name="base" /}
+{block name="body"}
+<body>
+<div class="ok-body">
+	<!--模糊搜索区域-->
+	<div class="layui-row">
+		<form class="layui-form layui-col-md12 ok-search">
+			<input class="layui-input" placeholder="账号" autocomplete="off" name="user_name">
+			<input class="layui-input" placeholder="姓名" autocomplete="off" name="name">
+			<button class="layui-btn" lay-submit="" lay-filter="search">
+				<i class="layui-icon">&#xe615;</i>
+			</button>
+		</form>
+	</div>
+	<!--数据表格-->
+	<table class="layui-hide" id="dataTable" lay-filter="dataTable"></table>
+</div>
+<!--js逻辑-->
+<script>
+listPageInit({
+	name:'用户',//列表名称
+	formPage:'/pages/adminUser/user-form.html',//表单页 新增或修改
+	defaultToolbar:['filter', 'print', 'exports'],
+	toolbar:'#mytoolbar',
+	cols:[[
+		{type: "checkbox", fixed: "left"},
+		{field: "id", title: "ID", width: 80, sort: true,totalRowText: '合计：'},
+		{field: "user_name", title: "账号", width: 150, sort: true},
+		{field: "role_name", title: "角色", width: 150},
+		{field: "name", title: "姓名", width: 100},
+		{title: "状态", width: 100,templet: "#statusTpl"},
+		{field: "email", title: "邮箱", width: 200},
+		{field: "last_login", title: "最后登入时间", width: 150},
+		{field: "last_ip", title: "最后登入IP", width: 150},
+		{field: "create_time", title: "创建时间", width: 150},
+		{title: "操作", width: 100, align: "center", fixed: "right", templet: "#operationTpl"}
+	]],//列表表头
+	afterPageInit:function(toolFunction){
+		
+		//批量启用
+		toolFunction.batchEnabled=function(data){
+			var ids = layui.okUtils.tableBatchCheck("dataTable");
+			if(ids){
+				layui.okUtils.ajax("/AdminUser/changeStatus","post",{ids:ids,status:1}).done(function(res){
+					layui.okUtils.tableSuccessMsg("操作成功");
+				});
+			}
+			
+		}
+		
+		//批量停用
+		toolFunction.batchDisabled=function(data){
+			var ids = layui.okUtils.tableBatchCheck("dataTable");
+			if(ids){
+				layui.okUtils.ajax("/AdminUser/changeStatus","post",{ids:ids,status:0}).done(function(res){
+					layui.okUtils.tableSuccessMsg("操作成功");
+				});
+			}
+		}
+		
+	}
+});
+</script>
+<!-- 头工具栏模板 -->
+<script type="text/html" id="mytoolbar">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="batchEnabled">批量启用</button>
+		<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="batchDisabled">批量停用</button>
+		<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchDel">批量删除</button>
+		<button class="layui-btn layui-btn-sm" lay-event="add">添加用户</button>
+	</div>
+</script>
+<!-- 启用|停用模板 -->
+<script type="text/html" id="statusTpl">
+	{{#  if(d.status == 0){ }}
+	<span class="layui-btn layui-btn-warm layui-btn-xs">已停用</span>
+	{{#  } else if(d.status == 1) { }}
+	<span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span>
+	{{#  } }}
+</script>
+
+
+{/block}
