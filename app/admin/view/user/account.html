@@ -46,6 +46,28 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text earnings">0</div>
+						<div class="stat-heading">当日收益</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text totality">0</div>
+						<div class="stat-heading">任务个数</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<div class="layui-row">
@@ -86,6 +108,8 @@ listPageInit({
 			$(".total .income").text(account.income);
 			$(".total .spend").text(account.spend);
 			$(".total .recharge").text(account.recharge);
+			$(".total .earnings").text(res.earnings);
+			$(".total .totality").text(res.totality);
 		}
 	}
 })

@@ -161,7 +161,7 @@ class User extends DbController{
         
         $model = Db::name("account_log");
         
-        $res = $model->where($wheres)->paginate([
+        $res = $model->where($wheres)->order('create_time desc')->paginate([
             'list_rows'=> $l,
             'page' => $p,
         ])->toArray();
@@ -187,6 +187,10 @@ class User extends DbController{
             $data['account']=$account;
         }
         
+        $totality = Db::name("account_log")->where("user_id",$userId)->whereDay('create_time')->count();
+        $earnings = Db::name("account_log")->where("user_id",$userId)->whereDay('create_time')->value('sum(money)');
+        $data['totality']=$totality;
+        $data['earnings']=$earnings;
         return json($data);
     }
     
