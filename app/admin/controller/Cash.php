@@ -12,11 +12,11 @@ class Cash extends DbController{
         $status = config("sys.cash_status");
         
         $data=[];
-        $data[]=["ID","电话","提现方式","提现金额","USDT个数","手续费","实际提现金额",
+        $data[]=["ID","会员ID","电话","提现方式","提现金额","USDT个数","手续费","实际提现金额",
         // "店番","银行","支店","姓名","账号",
         "USDT地址","提交时间","状态"];
         foreach ($list as $val){
-            $user = Db::name("user")->field("username,tel")->where("id",$val['user_id'])->find();
+            $user = Db::name("user")->field("id,username,tel")->where("id",$val['user_id'])->find();
             $val['username'] = $user['username'];
             $val['tel']=$user['tel'];
             $val['status_name']=$status[$val['status']];
@@ -32,7 +32,7 @@ class Cash extends DbController{
             
             
             $data[]=[
-                $val['id'],$val['username'],$val['channel'],$val['money'],$val['money2'],$val['fee'],$val['money_real'],
+                $val['id'],$user['id'],$val['username'],$val['channel'],$val['money'],$val['money2'],$val['fee'],$val['money_real'],
                 // $val['user_bank_num'],$val['user_bank_name'],$val['user_bank_branch'],$val['user_bank_username'],$val['user_bank_account'],
                 $val['ustd_link'],$val['create_time'],$val['status_name']
             ];

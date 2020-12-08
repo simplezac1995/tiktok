@@ -82,7 +82,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">密保答案</label>
 			<div class="layui-input-block">
-				<input type="text" name="answer" placeholder="请输入密保答案" autocomplete="off" class="layui-input">
+				<input type="text" name="answer" placeholder="请输入密保答案(不填写默认不修改)" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		
@@ -158,7 +158,14 @@
 			</div>
 		</div>
 		
-		
+		<div class="layui-form-item">
+			<label class="layui-form-label">是否内部号</label>
+			<div class="layui-input-block">
+				<input type="radio" name="is_inside" value="0" title="否" checked>
+				<input type="radio" name="is_inside" value="1" title="是" >
+			</div>
+		</div>
+
 		<div class="layui-form-item layui-form-text">
 			<label class="layui-form-label">备注</label>
 			<div class="layui-input-block">

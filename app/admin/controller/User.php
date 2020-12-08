@@ -359,7 +359,7 @@ class User extends DbController{
         }
         
         //密保
-        if($ary['question']){
+        if($ary['question'] && !empty($ary['answer'])){
             $answer = [
                 'question'=>$ary['question'],
                 'answer'=>$ary['answer'],
@@ -377,7 +377,24 @@ class User extends DbController{
             Db::name("user_ustd")->where('user_id', $ary['id'])->update(['link'=>$ary['usdt']]);
         }
     }
-    
+
+    public function modifypwd(){//批量修改密码
+        $ids = $this->request->post("ids");
+        $memo = $this->request->post("memo");
+
+        if($ids && !empty($memo)){
+            $reg ="/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,50}$/";
+            if(!preg_match($reg,$memo,$m)){
+                throw new \think\Exception("密码必须由数字和字母组成，且长度大于6位");
+            }
+            $password = password_encrypt($memo);
+            Db::name("user")->where("id","in",$ids)->save(['password'=>$password]);
+            return action_succ();
+        }else{
+            return action_error("参数错误");
+        }
+    }
+
     protected function getWhere(){
         $model = $this->getModel();
         
@@ -395,10 +412,14 @@ class User extends DbController{
         }
         
         
+        if(!empty($ary['is_inside'])){
+            $where[]=['a.is_inside','=',$ary['is_inside']];
+        }
+
         if(!empty($ary['vipcard_id'])){
             $where[]=['a.vipcard_id','=',$ary['vipcard_id']];
         }
-        
+
         if(!empty($ary['date_range'])){
             $dates  = explode(" ~ ", $ary['date_range']);
             $begin = strtotime($dates[0]);

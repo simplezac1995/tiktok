@@ -8,6 +8,12 @@
 					<option value="">会员等级</option>
 				</select>
 			</div>
+			<div class="layui-inline">
+				<select name="is_inside">
+					<option value="">账号类型</option>
+					<option value="1">内部号</option>
+				</select>
+			</div>
 			<div class="layui-inline"><input class="layui-input" placeholder="会员ID" autocomplete="off" name="user_id"></div>
 			<div class="layui-inline"><input class="layui-input" placeholder="账号/姓名" autocomplete="off" name="kw"></div>
 			<div class="layui-inline"><input class="layui-input date-range" placeholder="注册时间" autocomplete="off" name="date_range"></div>
@@ -48,7 +54,44 @@ listPageInit({
 		}).fail(function (error) {
 		    console.log(error);
 		});
-		
+
+		function modifypwd(){
+			var checkStatus = layui.table.checkStatus('dataTable');
+            var rows = checkStatus.data.length;
+            if (rows > 0) {
+                var ids = [];
+                for (var i = 0; i < rows; i++) {
+                    ids.push(checkStatus.data[i].id);
+                }
+                
+            	layer.prompt({
+           		  formType: 2,
+           		  title: '请输入统一密码',
+           		  area: ['800px', '50px'] //自定义文本域宽高
+           		}, function(value, index, elem){
+           			var memo = value;
+           			if(!memo){
+    					layui.layer.msg("请输入统一密码");
+    					return;
+    				}
+           			
+           			layui.okLayer.confirm("确定修改密码吗？", function(i){
+        				okUtils.ajax("/user/modifypwd", "post", {ids:ids,memo:memo}, true).done(function (response) {
+                        	layui.table.reload('dataTable');
+                        	layer.close(index);
+                        	layer.close(i);
+        				}).fail(function (error) {
+	    					layui.layer.msg("密码必须由数字和字母组成，且长度大于6位");
+	    					return;
+        				});
+        			})
+           		  	
+           		});
+            } else {
+                layer.msg("未选择有效数据");
+            }
+		}
+
 		toolFunction.changeTeam=function(data){
 			layui.okLayer.open("调整团队","/pages/user/changeTeam?id="+data.id+"&account="+data.username, "60%", "60%", null, function () {
 				layui.table.reload('dataTable');
@@ -69,6 +112,10 @@ listPageInit({
 		toolFunction.team=function(data){
 			layui.okLayer.open("团队信息("+data.username+")","/pages/user/team?id="+data.id, "60%", "80%", null, function () {
 			})
+		}
+
+		toolFunction.changepwd=function(data){
+			modifypwd();
 		}
 	}
 })
@@ -105,7 +152,9 @@ listPageInit({
 		{if has_power('user.add')}
 		<button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
 		{/if}
+		<button type="button" class="layui-btn layui-btn-sm" lay-event="changepwd">批量修改密码</button>
 	</div>
-	</script>
+</script>
 </body>
 {/block}
+
