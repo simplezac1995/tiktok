@@ -62,6 +62,28 @@ layui.use(["okUtils", "table", "okCountUp", "okMock"], function () {
         
     }
     
+    function tasksuccReport(){
+        okUtils.ajax("/index/tasksuccReport","post",{},true).done(function(res){
+            var option = {
+                xAxis: {
+                    type: 'category',
+                    data: res.data.x
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: res.data.y,
+                    type: 'bar'
+                }]
+            };
+            var loginMap = echarts.init($("#tasksuccMap")[0], "theme");
+            loginMap.setOption(option);
+            okUtils.echartsResize([loginMap]);
+        })
+        
+    }
+
     function rechargeMoneyReport(){
     	okUtils.ajax("/index/rechargeMoneyReport","post",{},true).done(function(res){
     		var option = {
@@ -109,7 +131,8 @@ layui.use(["okUtils", "table", "okCountUp", "okMock"], function () {
 
     statText();
     registReport();
-    loginReport();
+    // loginReport();
+    tasksuccReport();
     rechargeMoneyReport();
     rechargeCountReport();
 });

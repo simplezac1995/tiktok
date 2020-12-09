@@ -563,7 +563,31 @@ class Index extends BaseController
         }
         return action_succ($datas);
     }
-    
+
+    /**
+     * 每日实际完成任务统计
+     * @return Json
+     */
+    public function tasksuccReport(){
+        
+        $dts = $this->getMonthDays(date("Y-m"));
+        $datas = [
+            'x'=>[],
+            'y'=>[],
+        ];
+        foreach ($dts as $val){
+            $todayWhere=[
+                ['create_time','between',[$val['b'],$val['e']]]
+            ];
+            
+            $count = Db::name("task_apply")->field("user_id")->where(['status'=>2])->where($todayWhere)->group("user_id")->count("user_id");
+
+            $datas['x'][]=$val['txt'];
+            $datas['y'][] = $count;
+        }
+        return action_succ($datas);
+    }
+
     /**
      * 充值金额统计
      * @return Json
