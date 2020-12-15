@@ -12,15 +12,23 @@ class Bank extends BaseController{
      * @return Json
      */
     public function sysBank(){
-        $list = Db::name("bank")->where("user_id",0)->order("id")->select();
-        if($list && sizeof($list)>0){
-            $len = sizeof($list);
-            $i = rand(0,$len-1);
-            return action_succ($list[$i]);
-        }else{
-            return action_error("system bank not find");
+        $bank_sys = Cache::get("bank_sys");
+        if(empty($bank_sys)){
+            $bank_sys = Db::name("bank")->where("user_id",0)->order("id")->select();
+            Cache::set("bank_sys", $bank_sys);
         }
         
+        if($bank_sys && sizeof($bank_sys)>0){
+            $len = sizeof($bank_sys);
+            $i = rand(0,$len-1);
+            return action_succ($bank_sys[$i]);
+        }else{
+            $bank_sys = Db::name("bank")->where("user_id",0)->order("id")->select();
+            $len = sizeof($bank_sys);
+            $i = rand(0,$len-1);
+            return action_succ($bank_sys[$i]);
+            // return action_error("system bank not find");
+        }
     }
     
     /**

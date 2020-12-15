@@ -222,7 +222,8 @@ class Login
 
         $token = password_encrypt($userInfo['id'].time());
         $userInfo['token']=$token;
-        $ip = $this->request->ip();
+        // $ip = $this->request->ip();
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];;
         if(!$regist){
             //删了旧TOKEN 生成新token
             Db::name("user_token")->where(['user_id'=>$userInfo['id']])->delete();

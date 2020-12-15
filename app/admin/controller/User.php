@@ -420,6 +420,10 @@ class User extends DbController{
             $where[]=['a.vipcard_id','=',$ary['vipcard_id']];
         }
 
+        if(!empty($ary['ip'])){
+            $where[]=['a.ip','=',$ary['ip']];
+        }
+        
         if(!empty($ary['date_range'])){
             $dates  = explode(" ~ ", $ary['date_range']);
             $begin = strtotime($dates[0]);

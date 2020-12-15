@@ -151,11 +151,11 @@ class Cash extends BaseController{
         
         $data = [
             'channel'=>$channel,
-            'user_bank_num'=>$userBank['bank_num'],
-            'user_bank_name'=>$userBank['bank_name'],
-            'user_bank_branch'=>$userBank['branch'],
-            'user_bank_username'=>$userBank['user_name'],
-            'user_bank_account'=>$userBank['account'],
+            // 'user_bank_num'=>$userBank['bank_num'],
+            // 'user_bank_name'=>$userBank['bank_name'],
+            // 'user_bank_branch'=>$userBank['branch'],
+            // 'user_bank_username'=>$userBank['user_name'],
+            // 'user_bank_account'=>$userBank['account'],
             'ustd_link'=>$userUstd['link'],
             'user_id'=>$this->userId,
             'money'=>$money,
