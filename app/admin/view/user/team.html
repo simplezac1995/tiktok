@@ -1,7 +1,138 @@
 {extend name="base" /}{block name="body"}
 
 <body>
-<div class="ok-body">
+<div class="console ok-body home">
+	<div class="layui-row layui-col-space15 total_agent" style="display: none;">
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text recharge_total_agent">0</div>
+						<div class="stat-heading">总充值</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text withdraw_total_agent">0</div>
+						<div class="stat-heading">总提现</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card ">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text cash_today_agent">0</div>
+						<div class="stat-heading">当日充值</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text withdraw_today_agent">0</div>
+						<div class="stat-heading">当日提现</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text recharge_count_agent">0</div>
+						<div class="stat-heading">总充值次数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text withdraw_count_agent">0</div>
+						<div class="stat-heading">总提现次数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text team_count_agent">0</div>
+						<div class="stat-heading">团队成员总人数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text team_balance_agent">0</div>
+						<div class="stat-heading">团队成员总余额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-row layui-col-space15 total_normal" style="display: none;">
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text recharge_total_normal">0</div>
+						<div class="stat-heading">总充值</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text withdraw_total_normal">0</div>
+						<div class="stat-heading">总提现</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card ">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text team_count_normal">0</div>
+						<div class="stat-heading">总人数</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-col-xs6 layui-col-md3">
+			<div class="layui-card">
+				<div class="ok-card-body">
+					<div class="cart-r">
+						<div class="stat-text team_balance_normal">0</div>
+						<div class="stat-heading">团队账户余额</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<table class="layui-hide" id="dataTable1" lay-filter="dataTable1"></table>
 	<table class="layui-hide" id="dataTable2" lay-filter="dataTable2"></table>
 	<table class="layui-hide" id="dataTable3" lay-filter="dataTable3"></table>
@@ -21,7 +152,9 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 		method:"post",
 		toolbar: '#mytoolbarTpl1',
 		defaultToolbar:[],
-		height:"300",
+		height:"312",
+		page: true,
+		limit: 50,
 		cols: [[
 			{field: "id", title: "会员ID", width: 150},
 			{title: "会员账号", width: 150,templet:"#teamTpl"},
@@ -46,7 +179,9 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 		method:"post",
 		toolbar: '#mytoolbarTpl2',
 		defaultToolbar:[],
-		height:"300",
+		height:"312",
+		page: true,
+		limit: 50,
 		cols: [[
 			{field: "id", title: "会员ID", width: 150},
 			{title: "会员账号", width: 150,templet:"#teamTpl"},
@@ -71,7 +206,9 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 		method:"post",
 		toolbar: '#mytoolbarTpl3',
 		defaultToolbar:[],
-		height:"300",
+		height:"312",
+		page: true,
+		limit: 50,
 		cols: [[
 			{field: "id", title: "会员ID", width: 150},
 			{title: "会员账号", width: 150,templet:"#teamTpl"},
@@ -139,4 +276,6 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 	<a href="javascript:" lay-event="team">{{d.username}}</a>
 </script>
 </body>
+
+<script type="text/javascript" src="/admin/js/team.js?v=1"></script>
 {/block}

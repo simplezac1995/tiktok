@@ -10,8 +10,16 @@
 			</div>
 			<div class="layui-inline">
 				<select name="is_inside">
-					<option value="">账号类型</option>
-					<option value="1">内部号</option>
+					<option value="">是否内部号</option>
+					<option value="1">是</option>
+					<option value="0">否</option>
+				</select>
+			</div>
+			<div class="layui-inline">
+				<select name="is_agent">
+					<option value="">是否代理</option>
+					<option value="1">是</option>
+					<option value="0">否</option>
 				</select>
 			</div>
 			<div class="layui-inline"><input class="layui-input" placeholder="会员ID" autocomplete="off" name="user_id"></div>
@@ -153,7 +161,9 @@ listPageInit({
 		{if has_power('user.add')}
 		<button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
 		{/if}
+		{if has_power('user.batch_modify')}
 		<button type="button" class="layui-btn layui-btn-sm" lay-event="changepwd">批量修改密码</button>
+		{/if}
 	</div>
 </script>
 </body>

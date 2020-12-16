@@ -207,7 +207,7 @@ class User extends DbController{
         
         //每页显示数量
         $l = $this->request->post('limit');
-        if(!$l)$l=20;
+        if(!$l)$l=10;
         
         $model = Db::name("user");
         $topClounm = "";
@@ -226,8 +226,8 @@ class User extends DbController{
         //     'page' => $p,
         // ])->toArray();
         $res = $model->field("id,vipcard_id,create_time,username")->paginate([
-            'list_rows'=> 10000,
-            'page' => 1,
+            'list_rows'=> $l,
+            'page' => $p,
         ])->toArray();
         $list = $res['data'];
         $data = array(
@@ -395,6 +395,89 @@ class User extends DbController{
         }
     }
 
+    /**
+     * 获取代理团队信息
+     */
+    public function getTeamInfoAgent(){
+        $ids = $id = $this->request->post("user_id");
+        if(!empty($ids)){
+            $data = [];//无限级下级
+            // $data[] = $id;
+            while ($ids) {
+                $users = Db::name("user")->field('id')->where("top1","in",$ids)->select()->toArray();
+                if(empty($users)){
+                    break;
+                }
+                $ids   = array_column($users, 'id');
+                $data = array_merge($data, $ids);
+            }
+
+            $dtb = strtotime(date("Y-m-d"));
+            $dte = time();
+            $todayWhere=[
+                ['create_time','between',[$dtb,$dte]]
+            ];
+
+            $rechargeTotalAgent = Db::name("recharge")->where(['status'=>1])->where("user_id", "in", $data)->sum("money");
+            $withdrawTotalAgent = Db::name("cash")->where(['status'=>1])->where("user_id", "in", $data)->sum("money");
+            $cashTodayAgent = Db::name("recharge")->where(['status'=>1])->where("user_id", "in", $data)->where($todayWhere)->sum("money");
+            $withdrawTodayAgent = Db::name("cash")->where(['status'=>1])->where("user_id", "in", $data)->where($todayWhere)->sum("money");
+            $rechargeCountAgent = Db::name("recharge")->where(['status'=>1])->where("user_id", "in", $data)->count();
+            $withdrawCountAgent = Db::name("cash")->where(['status'=>1])->where("user_id", "in", $data)->count();
+            $teamBalanceAgent = Db::name("account")->where("user_id", "in", $data)->sum("balance");
+
+            $teamInfo = [];
+            $teamInfo['rechargeTotalAgent'] = $rechargeTotalAgent;//代理总充值
+            $teamInfo['withdrawTotalAgent'] = $withdrawTotalAgent;//代理总提现
+            $teamInfo['cashTodayAgent'] = $cashTodayAgent;//代理当日充值
+            $teamInfo['withdrawTodayAgent'] = $withdrawTodayAgent;//代理当日提现
+            $teamInfo['rechargeCountAgent'] = $rechargeCountAgent;//代理总充值次数
+            $teamInfo['withdrawCountAgent'] = $withdrawCountAgent;//代理总提现次数
+            $teamInfo['teamCountAgent'] = count($data);//代理团队成员总人数
+            $teamInfo['teamBalanceAgent'] = $teamBalanceAgent;//代理团队成员总余额
+
+            return action_succ($teamInfo);
+        }else{
+            return action_error("参数错误");
+        }
+    }
+
+    /**
+     * 获取正常三级团队信息
+     */
+    public function getTeamInfoNormal(){
+        $ids = $id = $this->request->post("user_id");
+        if(!empty($ids)){
+            $data = [];//正常三级团队下级
+            $top1 = Db::name("user")->field('id')->where("top1","in",$ids)->select()->toArray();
+            $top2 = Db::name("user")->field('id')->where("top2","in",$ids)->select()->toArray();
+            $top3 = Db::name("user")->field('id')->where("top3","in",$ids)->select()->toArray();
+            if(!empty($top1)){
+                $data = array_merge($data, array_column($top1, 'id'));
+            }
+            if(!empty($top2)){
+                $data = array_merge($data, array_column($top2, 'id'));
+            }
+            if(!empty($top3)){
+                $data = array_merge($data, array_column($top3, 'id'));
+            }
+            
+            $rechargeTotalNormal = Db::name("recharge")->where(['status'=>1])->where("user_id", "in", $data)->sum("money");
+            $withdrawTotalNormal = Db::name("cash")->where(['status'=>1])->where("user_id", "in", $data)->sum("money");
+            $teamBalanceNormal = Db::name("account")->where("user_id", "in", $data)->sum("balance");
+
+            $teamInfo = [];
+            $teamInfo['rechargeTotalNormal'] = $rechargeTotalNormal;//正常三级总充值
+            $teamInfo['withdrawTotalNormal'] = $withdrawTotalNormal;//正常三级总提现
+            $teamInfo['teamCountNormal'] = count($data);//正常三级团队成员总人数
+            $teamInfo['teamBalanceNormal'] = $teamBalanceNormal;//正常三级团队成员总余额
+            
+            return action_succ($teamInfo);
+        }else{
+            return action_error("参数错误");
+        }
+    }
+
     protected function getWhere(){
         $model = $this->getModel();
         
@@ -414,6 +497,10 @@ class User extends DbController{
         
         if(!empty($ary['is_inside'])){
             $where[]=['a.is_inside','=',$ary['is_inside']];
+        }
+
+        if(!empty($ary['is_agent'])){
+            $where[]=['a.is_agent','=',$ary['is_agent']];
         }
 
         if(!empty($ary['vipcard_id'])){

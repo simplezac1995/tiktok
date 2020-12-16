@@ -48,7 +48,7 @@ class Cash extends DbController{
         $res = parent::listData();
         $list = [];
         foreach ($res['data'] as $val){
-            $user = Db::name("user")->field("username,tel")->where("id",$val['user_id'])->find();
+            $user = Db::name("user")->field("username,tel,is_inside")->where("id",$val['user_id'])->find();
             $val['username'] = $user['username'];
             $val['tel']=$user['tel'];
             $val['status_name']=$status[$val['status']];
@@ -63,7 +63,8 @@ class Cash extends DbController{
             // }
             
             $val['channel'] = $val['channel']==2?'USDT':'线下银行卡';
-            
+            $val['is_inside'] = $user['is_inside']==1?'是':'否';
+
             $list[]=$val;
         }
         
