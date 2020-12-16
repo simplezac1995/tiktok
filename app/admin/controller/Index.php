@@ -18,7 +18,16 @@ class Index extends BaseController
         View::assign("username",$userInfo['user_name']);
         return view();
     }
-    
+
+    public function console()
+    {
+        $userInfo = get_login_info();
+        $config = get_config();
+        $sysname = !empty($config['system_name'])?$config['system_name']:'管理系统';
+        View::assign("sysname",$sysname);
+        View::assign("username",$userInfo['user_name']);
+        return view();
+    }
     /**
      * 系统配制信息
      * @return Json
@@ -42,20 +51,20 @@ class Index extends BaseController
      * @return Json
      */
     public function menu(){
-        $meuns = [
-            [
-                "title"=>"控制台",
-                "href"=>"index/console.html",
-                "fontFamily"=>"ok-icon",
-                "icon"=>"&#xe654;",
-                "spread"=>true,
-                "isCheck"=>true
-            ]
-        ];
+        // $meuns = [
+        //     [
+        //         "title"=>"控制台",
+        //         "href"=>"index/console.html",
+        //         "fontFamily"=>"ok-icon",
+        //         "icon"=>"&#xe654;",
+        //         "spread"=>true,
+        //         "isCheck"=>true
+        //     ]
+        // ];
         
-        $meuns = array_merge($meuns,$this->getMenuChild());
+        // $meuns = array_merge($meuns,$this->getMenuChild());
         
-        return json($meuns);
+        return json($this->getMenuChild());
     }
     
     private function getMenuChild($top=0){
