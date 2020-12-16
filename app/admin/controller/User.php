@@ -186,10 +186,18 @@ class User extends DbController{
             $account = Db::name("account")->where("user_id",$userId)->field("balance,income,recharge,spend")->find();
             $data['account']=$account;
         }
-        
-        $totality = Db::name("account_log")->where("user_id",$userId)->whereDay('create_time')->count();
-        $earnings = Db::name("account_log")->where("user_id",$userId)->whereDay('create_time')->value('sum(money)');
-        $data['totality']=$totality;
+
+        $dtb = strtotime(date("Y-m-d"));
+        $dte = time();
+        $todayWhere=[
+            ['create_time','between',[$dtb,$dte]]
+        ];
+
+        $vipcard_id = Db::name("user")->where("id", $userId)->value('vipcard_id');
+        $taskmax = Db::name("vipcard")->where("id", $vipcard_id)->value('task_max');
+        $totality = Db::name("task_apply")->where("user_id",$userId)->where(['status'=>2])->where($todayWhere)->count("*");
+        $earnings = Db::name("account_log")->where("user_id",$userId)->where(['gp'=>4])->where($todayWhere)->sum("money");;
+        $data['totality']=intval($taskmax-$totality);
         $data['earnings']=$earnings;
         return json($data);
     }
