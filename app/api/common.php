@@ -149,7 +149,7 @@ function tel_formate($tel){
         $e = str_pad($e, strlen($temp[0]),"*",STR_PAD_RIGHT);
         return $e."@".$temp[1];
     }else{//手机号处理
-        $e = substr($tel, -6,4);
+        $e = substr($tel,-4);
         //return str_pad($e, strlen($tel),"*",STR_PAD_LEFT);
         return "****".$e;
     }

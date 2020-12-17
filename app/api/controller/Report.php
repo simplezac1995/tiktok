@@ -178,15 +178,17 @@ class Report extends BaseController{
                 $line = array_merge($line, $ids);
             }
 
-            $teamBalanceAgent = Db::name("account")->where("user_id", "in", $line)->sum("balance");//团队总余额
-            $rechargeTotalAgent = Db::name("recharge")->where(['status'=>1])->where("user_id", "in", $line)->sum("money");//团队总充值
-            $withdrawTotalAgent = Db::name("cash")->where(['status'=>1])->where("user_id", "in", $line)->sum("money");//团队总提现
-            $teamCountAgent = count($line);
+            if(!empty($line)){
+                $teamBalanceAgent = Db::name("account")->where("user_id", "in", $line)->sum("balance");//团队总余额
+                $rechargeTotalAgent = Db::name("recharge")->where(['status'=>1])->where("user_id", "in", $line)->sum("money");//团队总充值
+                $withdrawTotalAgent = Db::name("cash")->where(['status'=>1])->where("user_id", "in", $line)->sum("money");//团队总提现
+                $teamCountAgent = count($line);
 
-            $data['balance'] = $teamBalanceAgent;
-            $data['recharge'] = $rechargeTotalAgent;
-            $data['cash'] = $withdrawTotalAgent;
-            $data['team'] = $teamCountAgent;
+                $data['balance'] = $teamBalanceAgent;
+                $data['recharge'] = $rechargeTotalAgent;
+                $data['cash'] = $withdrawTotalAgent;
+                $data['team'] = $teamCountAgent;
+            }
 
             $res = Db::query("select count(*) s from t_user where top1=:user_id", ['user_id' =>$this->userId]);//直推人数
             if($res){
