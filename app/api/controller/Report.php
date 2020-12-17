@@ -168,14 +168,14 @@ class Report extends BaseController{
         if($is_agent == 1){//代理展示数据
             $ids = $id = $this->userId;
             $line = [];//无限级下级
-            // $line[] = $id;
+            $line[] = $id;
             while ($ids) {
                 $users = Db::name("user")->field('id')->where("top1","in",$ids)->select()->toArray();
                 if(empty($users)){
                     break;
                 }
                 $ids   = array_column($users, 'id');
-                $line = array_merge($data, $ids);
+                $line = array_merge($line, $ids);
             }
 
             $teamBalanceAgent = Db::name("account")->where("user_id", "in", $line)->sum("balance");//团队总余额
@@ -199,12 +199,22 @@ class Report extends BaseController{
             if($res && $res[0]['s']){
                 $data['tx1'] = $res[0]['s'];
             }
-            
+
+            //二级推荐人数
+            $res = Db::query("select count(*) s from t_user where top2=:user_id", ['user_id' =>$this->userId]);
+            if($res){
+                $data['tj2'] = $res[0]['s'];
+            }
             $res = Db::query("select count(*) s from (select id from t_user where vipcard_id>'{$vipid}' and top2={$this->userId} group by id) c");
             if($res && $res[0]['s']){
                 $data['tx2'] = $res[0]['s'];
             }
 
+            //三级推荐人数
+            $res = Db::query("select count(*) s from t_user where top3=:user_id", ['user_id' =>$this->userId]);
+            if($res){
+                $data['tj3'] = $res[0]['s'];
+            }
             $res = Db::query("select count(*) s from (select id from t_user where vipcard_id>'{$vipid}' and top3={$this->userId} group by id) c");
             if($res && $res[0]['s']){
                 $data['tx3'] = $res[0]['s'];

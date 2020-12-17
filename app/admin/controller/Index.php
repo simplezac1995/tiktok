@@ -9,6 +9,11 @@ use think\response\Json;
 
 class Index extends BaseController
 {
+    public function welcome()
+    {
+        return view();
+    }
+
     public function index()
     {
         $userInfo = get_login_info();
