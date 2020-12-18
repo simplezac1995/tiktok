@@ -156,22 +156,22 @@
 <script src="/admin/js/jquery-3.4.1.min.js"></script>
 <script>
 $("title").text("{$sysname}");
-Notification.requestPermission(function(status) {
-	console.log(status);
-	if(status=="granted"){
-		setInterval(function(){
-			$.post("/index/checkingOrdersCount",{},function(res){
-				console.log(res);
-				if(res.succ && res.data>0){
-					var notification = new Notification('待审核订单', { body: '您有'+res.data+'条待审核订单，请及时处理！' });
-					notification.onclick=function(){
-						window.open("/pages/order/view");
-					}
-				}
-			})
-		},1000*60);
-	}
-});
+// Notification.requestPermission(function(status) {
+// 	console.log(status);
+// 	if(status=="granted"){
+// 		setInterval(function(){
+// 			$.post("/index/checkingOrdersCount",{},function(res){
+// 				console.log(res);
+// 				if(res.succ && res.data>0){
+// 					var notification = new Notification('待审核订单', { body: '您有'+res.data+'条待审核订单，请及时处理！' });
+// 					notification.onclick=function(){
+// 						window.open("/pages/order/view");
+// 					}
+// 				}
+// 			})
+// 		},1000*60);
+// 	}
+// });
 </script>
 </body>
 
