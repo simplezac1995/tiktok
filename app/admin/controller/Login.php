@@ -57,7 +57,8 @@ class Login
                 $powers = Db::name("role")->where("id",$userInfo['role_id'])->value("powers");
             }
             
-            $ip = $_SERVER['HTTP_X_REAL_IP'];
+            // $ip = $_SERVER['HTTP_X_REAL_IP'];
+            $ip = $this->request->ip();
             Db::name("admin_user")->where("id",$userInfo['id'])->update([
                 'powers'=>$powers,
                 'last_login'=>time(),
