@@ -3,6 +3,9 @@
 <div class="ok-body">
 	<div class="layui-row">
 		<form class="layui-form layui-col-md12 ok-search">
+			<div class="layui-inline"><input class="layui-input" placeholder="会员ID" autocomplete="off" name="user_id"></div>
+			<div class="layui-inline"><input class="layui-input" placeholder="账号/姓名" autocomplete="off" name="kw"></div>			
+			<div class="layui-inline"><input class="layui-input" placeholder="IP地址" autocomplete="off" name="ip"></div>
 			<div class="layui-inline">
 				<select name="vipcard_id">
 					<option value="">会员等级</option>
@@ -22,10 +25,7 @@
 					<option value="0">否</option>
 				</select>
 			</div>
-			<div class="layui-inline"><input class="layui-input" placeholder="会员ID" autocomplete="off" name="user_id"></div>
-			<div class="layui-inline"><input class="layui-input" placeholder="账号/姓名" autocomplete="off" name="kw"></div>
 			<div class="layui-inline"><input class="layui-input date-range" placeholder="注册时间" autocomplete="off" name="date_range"></div>
-			<div class="layui-inline"><input class="layui-input" placeholder="IP地址" autocomplete="off" name="ip"></div>
 			<button class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
 		</form>
 	</div>
@@ -46,7 +46,7 @@ listPageInit({
 		{field: "balance", title: "余额", width: 150},
 		{field: "income", title: "累计奖励", width: 150},
 		{field: "team", title: "销售团队", width: 150,templet:"#teamTpl"},
-		{field: "create_time", title: "注册时间", width: 150},
+		{field: "create_time", title: "注册时间", width: 200},
 		{field: "top1", title: "上级ID", width: 150},
 		{field: "ip", title: "登入IP", width: 150},
 		{title: "操作", width: 300, align: "center", templet: "#myoperationTpl", fixed: "right"}

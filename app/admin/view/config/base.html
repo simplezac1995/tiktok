@@ -119,11 +119,27 @@
 		  <div class="layui-field-box">
 				
 				<div class="layui-form-item">
-					<label class="layui-form-label">平台运营时间</label>
+					<label class="layui-form-label">平台任务时间</label>
 					<div class="layui-input-block">
 						<div class="layui-inline"><select name="open_begin_hour"></select></div>
 						<div class="layui-inline">~</div>
 						<div class="layui-inline"><select name="open_end_hour"></select></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">平台充值时间</label>
+					<div class="layui-input-block">
+						<div class="layui-inline"><select name="recharge_begin_hour"></select></div>
+						<div class="layui-inline">~</div>
+						<div class="layui-inline"><select name="recharge_end_hour"></select></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">平台提现时间</label>
+					<div class="layui-input-block">
+						<div class="layui-inline"><select name="withdraw_begin_hour"></select></div>
+						<div class="layui-inline">~</div>
+						<div class="layui-inline"><select name="withdraw_end_hour"></select></div>
 					</div>
 				</div>
 				<div class="layui-form-item">
@@ -200,6 +216,10 @@ formPageInit({
 			var html = '<option value="'+i+'">'+i+'点</option>';
 			$("select[name=open_begin_hour]").append(html);
 			$("select[name=open_end_hour]").append(html);
+			$("select[name=recharge_begin_hour]").append(html);
+			$("select[name=recharge_end_hour]").append(html);
+			$("select[name=withdraw_begin_hour]").append(html);
+			$("select[name=withdraw_end_hour]").append(html);
 		}
 		form.render('select');
 		//获取页面数据

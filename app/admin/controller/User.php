@@ -155,10 +155,14 @@ class User extends DbController{
             $wheres[]=['create_time','<=',$end];
         }
         
+        if(!empty($post['gp'])){
+            $wheres[]=['gp','=',$post['gp']];
+        }
+
         if(!empty($post['type'])){
             $wheres[]=['type','=',$post['type']];
         }
-        
+
         $model = Db::name("account_log");
         
         $res = $model->where($wheres)->order('create_time desc')->paginate([
@@ -166,7 +170,27 @@ class User extends DbController{
             'page' => $p,
         ])->toArray();
         
+        if(!empty($post['gp']) && $post['gp'] == 1){//特殊判断 会员升级vip充值的数据拼接上
+        	$newdata = [];
+        	$rechargeList = Db::name("recharge")->where("user_id",$userId)->where("status",1)->field('money, create_time')->select()->toArray();
+        	if(!empty($rechargeList)){
+        		foreach ($rechargeList as $key => $value) {
+					$newdata[$key]['create_time'] = $value['create_time'];
+					$newdata[$key]['gp'] = 1;
+					$newdata[$key]['type'] = 12;
+					$newdata[$key]['memo'] = '';
+					$newdata[$key]['money'] = $value['money'];
+					$newdata[$key]['user_id'] = $userId;
+        		}
+
+        		$res['data'] = array_merge($res['data'], $newdata);
+        		$res['total'] = count($res['data']);
+        	}
+        }
+
+
         $list = $res['data'];
+
         $data = array(
             'code'=>0,
             'msg'=>'',
@@ -183,7 +207,14 @@ class User extends DbController{
         $data['data'] = $list;
         
         if($p==1){
-            $account = Db::name("account")->where("user_id",$userId)->field("balance,income,recharge,spend")->find();
+            $account = Db::name("account")->where("user_id",$userId)->field("balance, income")->find();
+
+            $rechargeLog = Db::name("recharge")->where("user_id",$userId)->where("status",1)->field('sum(money) as money')->find();//会员升级vip的金额处于充值表
+            $accountLog  = Db::name("account_log")->where("user_id",$userId)->where("gp",1)->field('sum(money) as money')->find();//会员后台充值的金额
+            $cashLog     = Db::name("account_log")->where("user_id",$userId)->where("gp",5)->field('sum(money) as money')->find();//会员提现的金额
+
+			$account['recharge'] = intval($rechargeLog['money'])+intval($accountLog['money']);
+			$account['spend'] = -intval($cashLog['money']);
             $data['account']=$account;
         }
 
@@ -233,7 +264,7 @@ class User extends DbController{
         //     'list_rows'=> $l,
         //     'page' => $p,
         // ])->toArray();
-        $res = $model->field("id,vipcard_id,create_time,username")->paginate([
+        $res = $model->field("id,vipcard_id,create_time,username")->order('create_time desc')->paginate([
             'list_rows'=> $l,
             'page' => $p,
         ])->toArray();
@@ -410,7 +441,7 @@ class User extends DbController{
         $ids = $id = $this->request->post("user_id");
         if(!empty($ids)){
             $data = [];//无限级下级
-            // $data[] = $id;
+            $data[] = $id;
             while ($ids) {
                 $users = Db::name("user")->field('id')->where("top1","in",$ids)->select()->toArray();
                 if(empty($users)){

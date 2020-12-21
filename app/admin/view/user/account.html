@@ -73,9 +73,9 @@
 	<div class="layui-row">
 		<form class="layui-form layui-col-md12 ok-search">
 			<div class="layui-inline">
-				<select name="type">
+				<select name="gp">
 					<option value="">业务类型</option>
-					{foreach $Think.config.sys.account_log_types as $key=>$val }
+					{foreach $Think.config.sys.account_log_group as $key=>$val }
 					<option value="{$key}">{$val}</option>
 					{/foreach}
 				</select>
@@ -106,7 +106,7 @@ listPageInit({
 			var account = res.account;
 			$(".total .balance").text(account.balance);
 			$(".total .income").text(account.income);
-			$(".total .spend").text(account.spend);
+			$(".total .cash").text(account.spend);
 			$(".total .recharge").text(account.recharge);
 			$(".total .earnings").text(res.earnings);
 			$(".total .totality").text(res.totality);

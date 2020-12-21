@@ -160,13 +160,15 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 			{title: "会员账号", width: 150,templet:"#teamTpl"},
 			{field: "team", title: "下级人数", width: 150},
 			{field: "vipcard", title: "等级", width: 150},
-			{field: "create_time", title: "注册时间", width: 150},
+			{field: "create_time", title: "注册时间", width: 200},
 		]],
 		done: function (res, curr, count) {
 			if(curr==1){
+				var html = '';
 				res.total.forEach(function(row){
-					$("#total1").append('<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>');
+					html += '<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>';
 				})
+				$('#t1').html(html);
 			}
 		}
 	});
@@ -187,13 +189,15 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 			{title: "会员账号", width: 150,templet:"#teamTpl"},
 			{field: "team", title: "下级人数", width: 150},
 			{field: "vipcard", title: "等级", width: 150},
-			{field: "create_time", title: "注册时间", width: 150},
+			{field: "create_time", title: "注册时间", width: 200},
 		]],
 		done: function (res, curr, count) {
 			if(curr==1){
+				var html = '';
 				res.total.forEach(function(row){
-					$("#total2").append('<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>');
+					html += '<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>';
 				})
+				$('#t2').html(html);
 			}
 		}
 	});
@@ -214,13 +218,15 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 			{title: "会员账号", width: 150,templet:"#teamTpl"},
 			{field: "team", title: "下级人数", width: 150},
 			{field: "vipcard", title: "等级", width: 150},
-			{field: "create_time", title: "注册时间", width: 150},
+			{field: "create_time", title: "注册时间", width: 200},
 		]],
 		done: function (res, curr, count) {
 			if(curr==1){
+				var html = '';
 				res.total.forEach(function(row){
-					$("#total3").append('<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>');
+					html += '<div class="layui-inline"  style="padding-left:20px">'+row.name+':'+row.count+'人   </div>';
 				})
+				$('#t3').html(html);
 			}
 		}
 	});
@@ -257,18 +263,21 @@ layui.use(['table','okLayer','okUtils','jquery'], function () {
 <script type="text/html" id="mytoolbarTpl1">
 <div id="total1">
 <div class="layui-inline"><b>一级团队</b></div>
+<div class="layui-inline" id ="t1"></div>
 </div>
 </script>
 
 <script type="text/html" id="mytoolbarTpl2">
 <div id="total2">
 <div class="layui-inline"><b>二级团队</b></div>
+<div class="layui-inline" id ="t2"></div>
 </div>
 </script>
 
 <script type="text/html" id="mytoolbarTpl3">
 <div id="total3">
 <div class="layui-inline"><b>三级团队</b></div>
+<div class="layui-inline" id ="t3"></div>
 </div>
 </script>
 
