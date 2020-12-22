@@ -20,7 +20,6 @@ class Cash extends DbController{
             $val['username'] = $user['username'];
             $val['tel']=$user['tel'];
             $val['status_name']=$status[$val['status']];
-            
             // if($val['channel']=='1'){
             $val['money_real']=x_number_format2($val['money']-$val['fee']);
             // }else{
@@ -55,6 +54,7 @@ class Cash extends DbController{
             $val['username'] = $user['username'];
             $val['tel']=$user['tel'];
             $val['status_name']=$status[$val['status']];
+            $val['higher_top'] = Db::name("user")->where("id",$val['user_id'])->value("higher_top");
             if($val['status']==0){
                 $val['status_name']='<span style="color:red">待审核</span>';
             }

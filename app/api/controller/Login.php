@@ -147,7 +147,7 @@ class Login
         }
         
         
-        $topUser = Db::name("user")->field("id,top1,top2")->where("share_code",$sc)->find();
+        $topUser = Db::name("user")->field("id,top1,top2,higher_top")->where("share_code",$sc)->find();
         if(!$topUser){
             return action_error($this->msgs['share_code_error']);
         }
@@ -181,6 +181,7 @@ class Login
             'top1'=>$top,
             'top2'=>$topUser['top1'],
             'top3'=>$topUser['top2'],
+            'higher_top'=>$topUser['higher_top'],
             'vipcard_id'=>$vipcard_id,
             'sex'=>0,
             'address'=>'',

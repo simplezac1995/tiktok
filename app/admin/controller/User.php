@@ -69,18 +69,40 @@ class User extends DbController{
             return action_error("上级ID是当前用户的下级，不能调整");
         }
         
-        $c = Db::transaction(function () use($user_id,$top1,$top2,$top3) {
+        $higher_top = Db::name("user")->where("id",$user_id)->value('higher_top');
+        $c = Db::transaction(function () use($user_id,$top1,$top2,$top3,$higher_top) {
             $c = Db::name("user")->where("id",$user_id)->update([
                 'top1'=>$top1,
                 'top2'=>$top2,
                 'top3'=>$top3,
+                'higher_top'=>$higher_top,
             ]);
             
             if($c){
                 //修改我的直接下级会员的层级  top2=我的top1,top3=我的top2
                 Db::name("user")->where("top1",$user_id)->update(['top2'=>$top1,'top3'=>$top2]);
                 //修改我的间接下级会员的层级 top3=我的top1
-                Db::name("user")->where("top2",$user_id)->update(['top3'=>$top1,]);
+                Db::name("user")->where("top2",$user_id)->update(['top3'=>$top1]);
+                //修改我的极限上级会员ID
+                $userList = Db::name('user')->field('id')->where("top1",$user_id)->select()->toArray();//最极限的id数组
+                if(!empty($userList)){
+                    foreach ($userList as $key => $value) {
+                        $ids = [];
+                        $ids[] = $value['id'];
+                        $down = [];
+                        while ($ids) {
+                            $list = Db::name('user')->field('id')->where('top1', 'in', $ids)->select()->toArray();//下级的所有id
+                            if(!empty($list)){
+                                $down = array_merge($down, array_column($list, 'id'));
+                                $ids  = array_column($list, 'id');
+                            }else{
+                                break;
+                            }
+                        }
+
+                        $res  = Db::name('user')->where('id', 'in', $down)->update(['higher_top'=>$value['id']]);
+                    }
+                }
             }
             
             return $c;

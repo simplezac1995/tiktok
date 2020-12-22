@@ -49,7 +49,6 @@ class Recharge extends DbController{
     public function  list(){
         $res = parent::listData();
         $list = $res['data'];
-        
         //字典
         $status = config("sys.recharge_status");
         $vipcards = get_vipcards();
@@ -58,6 +57,7 @@ class Recharge extends DbController{
         foreach ($list as $key=>$val){
             $val['username'] = Db::name("user")->where("id",$val['user_id'])->value("username");
             $val['status_name'] = $status[$val['status']];
+            $val['higher_top'] = Db::name("user")->where("id",$val['user_id'])->value("higher_top");
             $val['vipcard'] = $vipcards[$val['vipcard_id']];
             $val['channel'] = $val['channel']==2?'USDT':'线下银行卡';
             //$val['create_time'] = date("Y-m-d H:i:s",$val['create_time']);
